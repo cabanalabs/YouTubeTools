@@ -11,7 +11,6 @@
       this.ytScreenId = screenId;
       this.currentVideoId = currentVideoId;
       this.setupScreen();
-      this.bookmarks = [];
 
       if (setDefaultActions == true) {
         this.setDefaultActions();
@@ -42,16 +41,6 @@
       this.progressSoFar = document.getElementById(this.containerId).getElementsByClassName('ProgressSoFar')[0];
       this.timePassed = document.getElementById(this.containerId).getElementsByClassName('TimePassed')[0];
 
-
-      this.bookmarkButton = document.getElementById(this.containerId).getElementsByClassName('BookmarkButton')[0];
-      this.bookmarkButton.setAttribute('onClick', "bookmark('"+this.ytScreenId+"')");
-
-      this.nextButton = document.getElementById(this.containerId).getElementsByClassName('NextButton')[0];
-      this.nextButton.setAttribute('onClick', "gotoBookmark('"+this.ytScreenId+"', 'next')");
-
-      this.previousButton = document.getElementById(this.containerId).getElementsByClassName('PreviousButton')[0];
-      this.previousButton.setAttribute('onClick', "gotoBookmark('"+this.ytScreenId+"', 'previous')");
-      
       this.fullScreenButton = document.getElementById(this.containerId).getElementsByClassName('FullScreenButton')[0];
       this.fullScreenButton.setAttribute('onClick', "fullScreen('"+this.ytScreenId+"')");
     }
@@ -75,38 +64,6 @@
       this.timePassed.innerHTML = convertSecondsToTime(seekTime);
     }
 
-    this.bookmark = function() {
-      var ytplayer = document.getElementById(this.ytScreenId);
-      var currentTime = ytplayer.getCurrentTime();
-      if (this.bookmarks.indexOf(currentTime) == -1) {
-        this.bookmarks[this.bookmarks.length] = currentTime;
-        var newBookmark = document.createElement('div');
-        newBookmark.setAttribute('class', 'Bookmark');
-        newBookmark.style.top = this.progressSoFar.offsetTop+'px';
-        newBookmark.style.left = ((currentTime / ytplayer.getDuration())*this.progressBar.offsetWidth)+this.progressBar.offsetLeft+'px';
-        this.progressBar.appendChild(newBookmark);
-        this.bookmarks.sort();
-      }
-    }
-
-    this.findBookmarkNear = function(p_currentTime, nextPrevious) {      
-      var currentTime = p_currentTime;
-      var elements = [];
-      if (nextPrevious === 'next') {
-        elements = this.bookmarks.filter(function(element, index, array) {
-          return (element > currentTime);
-        });
-        if (elements.length > 0)
-          elements.sort(function(a,b){return a - b});        
-      } if (nextPrevious === 'previous') {
-        elements = this.bookmarks.filter(function(element, index, array) {
-          return (element < currentTime);
-        });
-        if (elements.length > 0) 
-          elements.sort(function(a,b){return b - a});        
-      }
-      return elements.length > 0 ? elements[0] : false;
-    }
 
     this.setUIToPaused = function() {
       this.playButton.style.display = 'inline';      
@@ -181,23 +138,6 @@
         } else {
           ytplayer.playVideo();
         }
-      }
-    }
-
-    w.bookmark = function(playerId) {
-      var ytt = w.youTubeTools[playerId];
-      ytt.bookmark();
-    }
-
-    w.gotoBookmark = function(playerId, prevOrNext) {
-      var ytplayer = document.getElementById(playerId);
-      var ytt = w.youTubeTools[playerId];
-      var bookMarkTime = ytt.findBookmarkNear(ytplayer.getCurrentTime(), prevOrNext);
-      if (bookMarkTime) {
-        ytplayer.seekTo(bookMarkTime, true);
-        ytt.refreshWidthTo(bookMarkTime, ytplayer.getDuration());        
-      } else {
-        // Do nothing
       }
     }
 

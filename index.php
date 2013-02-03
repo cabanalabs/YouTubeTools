@@ -12,9 +12,6 @@
       <a href="javascript:void(0);" class="PlayButton"><img src="images/btnPlay.png" /></a>
       <a href="javascript:void(0);" class="PauseButton"><img src="images/btnPause.png" /></a>
 
-      <a href="javascript:void(0);" class="PreviousButton"><img src="images/btnPrevious.png" /></a>
-      <a href="javascript:void(0);" class="NextButton"><img src="images/btnNext.png" /></a>
-      <a href="javascript:void(0);" class="BookmarkButton"><img src="images/btnFavorite.png" /></a>
       <a href="javascript:void(0);" class="FullScreenButton"><img src="images/btnFullScreen.png" /></a>
       <span class="TimePassed">00:00:00</span>
     </div>
