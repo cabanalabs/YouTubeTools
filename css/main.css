@@ -93,3 +93,38 @@ html {
   float: right;
   margin-right:3px;
 }
+
+.Playlist {
+  vertical-align: top;
+  width: 100%;
+  text-align: left;
+}
+
+.PlaylistControls {
+  margin-top:10px;
+}
+
+.VideoUrl {
+  width:450px;
+  margin:0px;
+  height: 25px;
+  border: 0px; 
+  background-color: #111;
+  color: #CCC;
+  font-weight: bold;
+  padding-left:10px;
+}
+
+.VideoUrl:focus {
+ border: none;
+ background-color: #222;
+}
+
+.AddVideoButton, .LoadPlaylistButton {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.AddVideoButton img {
+  display: inline-block;
+}

@@ -18,8 +18,14 @@
     <div class="Progress">
       <span class="ProgressBar"><span class="ProgressSoFar"></span></span>
     </div>
+    <div class="Playlist">
+      <div class="PlaylistControls">
+        <input class="VideoUrl" type="textbox" />
+        <a href="javascript:void(0);" class="AddVideoButton"><img src="images/btnAddToPlaylist.png" /></a>
+        <a href="javascript:void(0);" class="LoadPlaylistButton"><img src="images/btnLoad.png" /></a>
+        </div>
+    </div>
   </div>
-
 
   <!-- load all the libraries first -->
   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -27,6 +33,9 @@
 
   <script type="text/javascript" src="js/player.js"></script>
   <script type="text/javascript">
+    var yturl = 'www.youtube.com/watch?feature=endscreen&NR=1&v=lJlB6TmXDfM&something=else';
+    var match = yturl.match(/([?\&]v\=)(\w+)/gi);
+    alert(match[0].substr(3));
     (new YouTubeTool).makePlayer('makeMeAPlayer', 'ze_player', '<?php echo $_GET['v']; ?>', true);
   </script>
 </body>
