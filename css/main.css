@@ -1,6 +1,7 @@
 html {
- background-color: black;
- text-align:center;
+  background-color: black;
+  text-align:center;
+  font-family: helvetica;
 }
 
 .YouTubePlayer {
@@ -69,7 +70,6 @@ html {
 .TimePassed {
   display:inline-block;
   color: gray;
-  font-family: helvetica;
   font-weight: bold;
   font-size: 15px;
   float: right;
@@ -98,10 +98,56 @@ html {
   vertical-align: top;
   width: 100%;
   text-align: left;
+  margin-top: 10px;
+}
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.List {
+ color: white;
+ height: 175px;
+ overflow: auto;
+}
+
+.ListElement {
+  width: 523px;
+  margin-top:5px;
+  text-align: right;
+  color: gray;
+}
+
+.ListElement.over {
+  border: 1px dashed gray;
+}
+
+.Playing {
+  color: white;
+}
+
+.ListElement span {
+  width: 456px;
+  vertical-align: top;
+  padding-left: 5px;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 27px;
+  background-color: #111;
+  text-align: left;
+}
+
+.RemoveButton, .BtnDrag {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .PlaylistControls {
-  margin-top:10px;
+  margin-top:5px;
 }
 
 .VideoUrl {
@@ -125,6 +171,3 @@ html {
   vertical-align: top;
 }
 
-.AddVideoButton img {
-  display: inline-block;
-}
