@@ -113,9 +113,20 @@
         };
 
         this.setupPlaylistControlsForVideoId(videoId);
+        this.replaceVideoIdWithTitle(videoId);
         retval = true;
       }
       return retval;
+    }
+
+    this.replaceVideoIdWithTitle = function(videoId) {
+      var url = 'https://gdata.youtube.com/feeds/api/videos/'+videoId+'?v=2&alt=json';
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.open( "GET", url, false );
+      xmlHttp.send( null );
+      var response = xmlHttp.responseText;
+      var videoFunc = new Function('return '+response);
+      this.playlist[videoId].element.getElementsByTagName('span')[0].innerHTML = videoFunc().entry.title['$t'];
     }
 
 
