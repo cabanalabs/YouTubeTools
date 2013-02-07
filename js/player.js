@@ -126,6 +126,7 @@
 
       item.addEventListener('dblclick', handleDoubleClick, false);
       item.addEventListener('click', handleClick, false);
+
       item.addEventListener('dragstart', handleDragStart, false);
       item.addEventListener('dragenter', handleDragEnter, false);
       item.addEventListener('dragover', handleDragOver, false);
@@ -299,11 +300,20 @@
       return getVideoIdFromAddress(window.location.toString());
     }
     
+    var dragSourceElement = null;
     w.handleDragStart = function(e) {
       this.style.opacity = '0.8';  // this / e.target is the source node.
+      dragSourceElement = this;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', this.innerHTML);
+      e.dataTransfer.setData('classes', this.className);
     }
 
     w.handleDragEnter = function(e) {
+      this.classList.add('over');
+    }
+
+    w.handleDragOver = function(e) {
       if (e.preventDefault) {
         e.preventDefault(); // Necessary. Allows us to drop.
       }
@@ -311,19 +321,37 @@
       return false;
     }
 
-    w.handleDragOver = function(e) {
-      this.classList.add('over');
-    }
-
     w.handleDragLeave = function(e) {
       this.classList.remove('over');
     }
     
     w.handleDrop = function(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation(); // Stops some browsers from redirecting.
+      }
+      // Don't do anything if dropping the same column we're dragging.
+      if (dragSourceElement != this) {
+        var playerId = this.getElementsByClassName('PlayerId')[0].value;
+        var ytt = w.youTubeTools[playerId];
+
+        // Set the source column's HTML to the HTML of the column we dropped on.
+        dragSourceElement.innerHTML = this.innerHTML;
+        dragSourceElement.className = this.className;
+        var dragSourceVideoId = dragSourceElement.getElementsByClassName('VideoId')[0].value;
+        ytt.playlist[dragSourceVideoId].element = dragSourceElement;
+        ytt.playlist[dragSourceVideoId].id = dragSourceVideoId;
+
+        this.innerHTML = e.dataTransfer.getData('text/html');
+        this.className = e.dataTransfer.getData('classes');
+        var videoId = this.getElementsByClassName('VideoId')[0].value;
+        ytt.playlist[videoId].element = this;
+        ytt.playlist[videoId].id = videoId;
+      }
       return false;
     }
 
     w.handleDragEnd = function(e) {
+      this.classList.remove('over');
     }
 
     w.handleDoubleClick = function(e) {
