@@ -296,11 +296,15 @@
     w.addVideoToPlaylist = function(playerId) {
       var ytplayer = document.getElementById(playerId);
       var ytt = w.youTubeTools[playerId];
-      var videoId = getVideoIdFromAddress(document.getElementById(ytt.containerId).getElementsByClassName('VideoUrl')[0].value);
+      var videoInput = document.getElementById(ytt.containerId).getElementsByClassName('VideoUrl')[0];
+      var videoId = getVideoIdFromAddress(videoInput.value);
       if (videoId != null) {
-        if ((ytt.addVideoIdToPlaylist(videoId)) && (ytt.playlist.length == 1)) {
-          ytt.currentVideoId = videoId;
-          resetPlaybackForPlayer(ytplayer, ytt);
+        if (ytt.addVideoIdToPlaylist(videoId)) {
+          if (ytt.playlist.length == 1) {
+            ytt.currentVideoId = videoId;
+            resetPlaybackForPlayer(ytplayer, ytt);
+          }
+          videoInput.value = '';
         }
       } else {
         alert('not ok');
