@@ -9,7 +9,7 @@
       this.seekTime = 0;  
       this.ytScreenId = screenId;
       this.currentVideoId = getVideoIdFromAddressBar();
-      this.setupScreen();
+      this.resetScreen();
       this.playlist = {};
 
       if (setDefaultActions == true) {
@@ -24,13 +24,15 @@
     }
 
     this.highlightCurrentVideo = function() {
-      for (videoId in this.playlist) {
-        this.playlist[videoId].element.className = 'ListElement';
+      if (this.currentVideoId != null) {
+        for (videoId in this.playlist) {
+          this.playlist[videoId].element.className = 'ListElement';
+        }
+        this.playlist[this.currentVideoId].element.className = 'ListElement Playing';
       }
-      this.playlist[this.currentVideoId].element.className = 'ListElement Playing';
     }
 
-    this.setupScreen = function() {
+    this.resetScreen = function() {
       swfobject.embedSWF(
         'http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid='+this.ytScreenId,
         this.ytScreenId, "640", "360", "9", null,  null, 
@@ -144,6 +146,7 @@
       item.addEventListener('dragleave', handleDragLeave, false);
       item.addEventListener('drop', handleDrop, false);
       item.addEventListener('dragend', handleDragEnd, false);
+      removeButton.setAttribute('onClick', "removeFromPlaylist('"+this.ytScreenId+"', '"+videoId+"')");
     }
 
     w.zeroPad = function(number) {
@@ -366,6 +369,7 @@
     }
 
     w.handleDragEnd = function(e) {
+      this.style.opacity = '1.0';  // this / e.target is the source node.
       this.classList.remove('over');
     }
 
@@ -382,6 +386,18 @@
 
     w.handleClick = function(e) {
       this.classList.toggle('over');
+    }
+    
+    w.removeFromPlaylist = function(playerId, videoId) {
+      var ytplayer = document.getElementById(playerId);
+      var ytt = w.youTubeTools[playerId];
+      if (ytt.currentVideoId == videoId) {
+        ytplayer.pauseVideo();
+        ytt.currentVideoId = null;
+        ytt.resetScreen();
+      }
+      ytt.playlist[videoId].element.parentNode.removeChild(ytt.playlist[videoId].element);
+      delete(ytt.playlist[videoId]);
     }
   };
 })(window);
