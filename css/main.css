@@ -166,7 +166,7 @@ html {
  background-color: #222;
 }
 
-.AddVideoButton, .LoadPlaylistButton, .SavePlaylistButton {
+.AddVideoButton {
   display: inline-block;
   vertical-align: top;
 }

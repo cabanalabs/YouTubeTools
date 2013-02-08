@@ -22,8 +22,6 @@
       <div class="PlaylistControls">
         <input class="VideoUrl" type="textbox" />
         <a href="javascript:void(0);" class="AddVideoButton"><img src="images/btnAddToPlaylist.png" /></a>
-        <a href="javascript:void(0);" class="LoadPlaylistButton"><img src="images/btnLoad.png" /></a>
-        <a href="javascript:void(0);" class="SavePlaylistButton"><img src="images/btnSavePlaylist.png" /></a>
       </div>
       <div class="List"></div>
     </div>
