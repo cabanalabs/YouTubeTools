@@ -12,6 +12,7 @@
       this.currentVideoId = (videoIds.length > 0) ? videoIds[0] : null;
       this.resetScreen();
       this.playlist = {};
+      this.videoIndexes = [];
 
       if (setDefaultActions == true) {
         this.setDefaultActions();
@@ -21,7 +22,7 @@
       for (index in videoIds) {
         this.addVideoIdToPlaylist(videoIds[index]);
       };
-      w.updateAddressBar(this.playlist);
+      w.updateAddressBar(this.videoIndexes);
     }
     
     this.setDefaultActions = function() {
@@ -116,6 +117,10 @@
           'element': newItem
         };
 
+        if (this.videoIndexes.indexOf(videoId) == -1) {
+          this.videoIndexes.push(videoId);
+        }
+
         this.setupPlaylistControlsForVideoId(videoId);
         this.replaceVideoIdWithTitle(videoId);
         retval = true;
@@ -149,6 +154,13 @@
       item.addEventListener('drop', handleDrop, false);
       item.addEventListener('dragend', handleDragEnd, false);
       removeButton.setAttribute('onClick', "removeFromPlaylist('"+this.ytScreenId+"', '"+videoId+"')");
+    }
+
+    this.switchVideoOrder = function(videoIdOne, videoIdTwo) {
+      var indexOne = this.videoIndexes.indexOf(videoIdOne);
+      var indexTwo = this.videoIndexes.indexOf(videoIdTwo);
+      this.videoIndexes[indexOne] = videoIdTwo;
+      this.videoIndexes[indexTwo] = videoIdOne;
     }
 
     w.zeroPad = function(number) {
@@ -290,10 +302,13 @@
     }
 
     w.getVideoIdsFromAddress = function(address) {
-      var match = address.match(/([?\&]v\=)([\w-]+)/gi);
+      var match = address.match(/([?\&]v\=)([\w-,]+)/gi);
       var videoIds = [];
-      for (index in match) {
-        videoIds.push(match[index].substr(3));
+      if (match != null) {
+        var videoIds = match[0].substr(3).split(',')
+        for (index in videoIds) {
+          videoIds.push(videoIds[index]);
+        }
       }
       return videoIds;
     }
@@ -309,7 +324,7 @@
             ytt.currentVideoId = videoIds[0];
             resetPlaybackForPlayer(ytplayer, ytt);
           }
-          updateAddressBar(ytt.playlist);
+          updateAddressBar(ytt.videoIndexes);
           videoInput.value = '';
         }
       } else {
@@ -317,10 +332,10 @@
       }
     }
 
-    w.updateAddressBar = function(playlist) {
-      var playlistQueryString = '?';
-      for (index in playlist) {
-        playlistQueryString += 'v='+index+'&';
+    w.updateAddressBar = function(videoIndexes) {
+      var playlistQueryString = '?v=';
+      for (index in videoIndexes) {
+        playlistQueryString += videoIndexes[index]+',';
       }
       playlistQueryString = playlistQueryString.substr(0, playlistQueryString.length - 1);
       window.history.replaceState('Object', 'Video Player', playlistQueryString);
@@ -376,6 +391,8 @@
         var videoId = this.getElementsByClassName('VideoId')[0].value;
         ytt.playlist[videoId].element = this;
         ytt.playlist[videoId].id = videoId;
+        ytt.switchVideoOrder(videoId, dragSourceVideoId);
+        w.updateAddressBar(ytt.videoIndexes);
       }
       return false;
     }
@@ -410,7 +427,8 @@
       }
       ytt.playlist[videoId].element.parentNode.removeChild(ytt.playlist[videoId].element);
       delete(ytt.playlist[videoId]);
-      updateAddressBar(ytt.playlist);
+      ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(videoId), 1);
+      updateAddressBar(ytt.videoIndexes);
     }
   };
 })(window);
