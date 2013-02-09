@@ -8,19 +8,40 @@
       this.containerId = containerId;
       this.seekTime = 0;  
       this.ytScreenId = screenId;
-      this.currentVideoId = getVideoIdFromAddressBar();
+      var videoIds = getVideoIdsFromAddressBar();
+      this.currentVideoId = (videoIds.length > 0) ? videoIds[0] : null;
       this.resetScreen();
       this.playlist = {};
 
       if (setDefaultActions == true) {
         this.setDefaultActions();
       }
-
-      if(this.currentVideoId != null) {
-        this.addVideoIdToPlaylist(this.currentVideoId);
-      }
-      
       w.youTubeTools[this.ytScreenId] = this;
+
+      for (index in videoIds) {
+        this.addVideoIdToPlaylist(videoIds[index]);
+      };
+      w.updateAddressBar(this.playlist);
+    }
+    
+    this.setDefaultActions = function() {
+      // Setup buttons      
+      this.playButton = document.getElementById(this.containerId).getElementsByClassName('PlayButton')[0];
+      this.pauseButton = document.getElementById(this.containerId).getElementsByClassName('PauseButton')[0];
+      this.playButton.setAttribute('onClick', "play('"+this.ytScreenId+"')");
+      this.pauseButton.setAttribute('onClick', "play('"+this.ytScreenId+"')");
+      
+      this.progressBar = document.getElementById(this.containerId).getElementsByClassName('ProgressBar')[0];
+      this.progressBar.setAttribute('onClick', "setPlaybackTo('"+this.ytScreenId+"')");
+
+      this.progressSoFar = document.getElementById(this.containerId).getElementsByClassName('ProgressSoFar')[0];
+      this.timePassed = document.getElementById(this.containerId).getElementsByClassName('TimePassed')[0];
+
+      this.fullScreenButton = document.getElementById(this.containerId).getElementsByClassName('FullScreenButton')[0];
+      this.fullScreenButton.setAttribute('onClick', "fullScreen('"+this.ytScreenId+"')");
+      
+      this.addVideoButton = document.getElementById(this.containerId).getElementsByClassName('AddVideoButton')[0];
+      this.addVideoButton.setAttribute('onClick', "addVideoToPlaylist('"+this.ytScreenId+"')");
     }
 
     this.highlightCurrentVideo = function() {
@@ -41,25 +62,6 @@
       );      
     }
 
-    this.setDefaultActions = function() {
-      // Setup buttons      
-      this.playButton = document.getElementById(this.containerId).getElementsByClassName('PlayButton')[0];
-      this.pauseButton = document.getElementById(this.containerId).getElementsByClassName('PauseButton')[0];
-      this.playButton.setAttribute('onClick', "play('"+this.ytScreenId+"')");
-      this.pauseButton.setAttribute('onClick', "play('"+this.ytScreenId+"')");
-      
-      this.progressBar = document.getElementById(this.containerId).getElementsByClassName('ProgressBar')[0];
-      this.progressBar.setAttribute('onClick', "setPlaybackTo('"+this.ytScreenId+"')");
-
-      this.progressSoFar = document.getElementById(this.containerId).getElementsByClassName('ProgressSoFar')[0];
-      this.timePassed = document.getElementById(this.containerId).getElementsByClassName('TimePassed')[0];
-
-      this.fullScreenButton = document.getElementById(this.containerId).getElementsByClassName('FullScreenButton')[0];
-      this.fullScreenButton.setAttribute('onClick', "fullScreen('"+this.ytScreenId+"')");
-      
-      this.addVideoButton = document.getElementById(this.containerId).getElementsByClassName('AddVideoButton')[0];
-      this.addVideoButton.setAttribute('onClick', "addVideoToPlaylist('"+this.ytScreenId+"')");
-    }
 
     this.setUIToPlaying = function() {
       this.playButton.style.display = 'none';
@@ -287,26 +289,27 @@
       setupKeyboardControlsForPlayer(ytplayer);
     }
 
-    w.getVideoIdFromAddress = function(address) {
+    w.getVideoIdsFromAddress = function(address) {
       var match = address.match(/([?\&]v\=)([\w-]+)/gi);
-      var videoId = null;
-      if (match != null) {
-        videoId = match[0].substr(3);
+      var videoIds = [];
+      for (index in match) {
+        videoIds.push(match[index].substr(3));
       }
-      return videoId;
+      return videoIds;
     }
 
     w.addVideoToPlaylist = function(playerId) {
       var ytplayer = document.getElementById(playerId);
       var ytt = w.youTubeTools[playerId];
       var videoInput = document.getElementById(ytt.containerId).getElementsByClassName('VideoUrl')[0];
-      var videoId = getVideoIdFromAddress(videoInput.value);
-      if (videoId != null) {
-        if (ytt.addVideoIdToPlaylist(videoId)) {
+      var videoIds = getVideoIdsFromAddress(videoInput.value);
+      if (videoIds.length > 0) {
+        if (ytt.addVideoIdToPlaylist(videoIds[0])) {
           if (ytt.playlist.length == 1) {
-            ytt.currentVideoId = videoId;
+            ytt.currentVideoId = videoIds[0];
             resetPlaybackForPlayer(ytplayer, ytt);
           }
+          w.updateAddressBar(ytt.playlist);
           videoInput.value = '';
         }
       } else {
@@ -314,8 +317,17 @@
       }
     }
 
-    w.getVideoIdFromAddressBar = function() {
-      return getVideoIdFromAddress(window.location.toString());
+    w.updateAddressBar = function(playlist) {
+      var playlistQueryString = '?';
+      for (index in playlist) {
+        playlistQueryString += 'v='+index+'&';
+      }
+      playlistQueryString = playlistQueryString.substr(0, playlistQueryString.length - 1);
+      window.history.replaceState('Object', 'Video Player', playlistQueryString);
+    }
+
+    w.getVideoIdsFromAddressBar = function() {
+      return getVideoIdsFromAddress(window.location.toString());
     }
     
     var dragSourceElement = null;
