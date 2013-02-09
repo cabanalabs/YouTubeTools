@@ -8,7 +8,7 @@
       this.containerId = containerId;
       this.seekTime = 0;  
       this.ytScreenId = screenId;
-      var videoIds = getVideoIdsFromAddressBar();
+      var videoIds = w.getVideoIdsFromAddressBar();
       this.currentVideoId = (videoIds.length > 0) ? videoIds[0] : null;
       this.resetScreen();
       this.playlist = {};
@@ -309,7 +309,7 @@
             ytt.currentVideoId = videoIds[0];
             resetPlaybackForPlayer(ytplayer, ytt);
           }
-          w.updateAddressBar(ytt.playlist);
+          updateAddressBar(ytt.playlist);
           videoInput.value = '';
         }
       } else {
@@ -410,6 +410,7 @@
       }
       ytt.playlist[videoId].element.parentNode.removeChild(ytt.playlist[videoId].element);
       delete(ytt.playlist[videoId]);
+      updateAddressBar(ytt.playlist);
     }
   };
 })(window);
