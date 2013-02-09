@@ -224,6 +224,15 @@
       }
     }
 
+    w.playNext = function(ytplayer, ytt) {
+      var currentVideoIndex = ytt.videoIndexes.indexOf(ytt.currentVideoId);
+      if (currentVideoIndex < (ytt.videoIndexes.length - 1)) {
+        ytt.currentVideoId = ytt.videoIndexes[currentVideoIndex + 1];
+        ytt.seekTime = 0.0;
+        w.resetPlaybackForPlayer(ytplayer, ytt);
+      }
+    }
+
     w.fullScreen = function(playerId) {
       var ytt = w.youTubeTools[playerId];
       var c = document.getElementById(ytt.containerId);
@@ -266,6 +275,9 @@
           ytt.setUIToPlaying();
         } else if (newState == PAUSED) {          
           ytt.setUIToPaused();
+          if (ytplayer.getDuration() == ytplayer.getCurrentTime()) {
+            w.playNext(ytplayer, ytt);
+          }
         } else if (newState == STOPPED) {
           ytt.setUIToStopped();
         } else if (newState == ENDED) {
