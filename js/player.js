@@ -33,7 +33,7 @@
       this.pauseButton.setAttribute('onClick', "play('"+this.ytScreenId+"')");
       
       this.progressBar = document.getElementById(this.containerId).getElementsByClassName('ProgressBar')[0];
-      this.progressBar.setAttribute('onClick', "setPlaybackTo('"+this.ytScreenId+"')");
+      this.progressBar.setAttribute('onClick', "setPlaybackTo(event, '"+this.ytScreenId+"')");
 
       this.progressSoFar = document.getElementById(this.containerId).getElementsByClassName('ProgressSoFar')[0];
       this.timePassed = document.getElementById(this.containerId).getElementsByClassName('TimePassed')[0];
@@ -176,10 +176,10 @@
       return zeroPad(hours)+':'+zeroPad(minutes)+':'+zeroPad(seconds);
     }
 
-    w.getMousePositionX = function() {
+    w.getMousePositionX = function(e) {
       // Mouse position
       var x = 0;
-      var e = window.event;
+      if(!e){ e = window.event; }
       if (e.pageX) {
         x = e.pageX;
       } else if (e.clientX) {
@@ -188,10 +188,10 @@
       return x;
     }
 
-    w.getMousePositionY = function() {
+    w.getMousePositionY = function(e) {
       // Mouse position
       var y = 0;
-      var e = window.event;
+      if(!e){ e = window.event; }
       if (e.pageY) {
         x = e.pageY;
       } else if (e.clientY) {
@@ -200,10 +200,10 @@
       return x;
     }
 
-    w.setPlaybackTo = function(playerId) {
+    w.setPlaybackTo = function(event, playerId) {
       var ytplayer = document.getElementById(playerId);
       var ytt = w.youTubeTools[playerId];
-      var seekToSeconds = ((getMousePositionX() - ytt.progressBar.offsetLeft) / ytt.progressBar.offsetWidth) * ytplayer.getDuration();
+      var seekToSeconds = ((getMousePositionX(event) - ytt.progressBar.offsetLeft) / ytt.progressBar.offsetWidth) * ytplayer.getDuration();
       ytplayer.seekTo(seekToSeconds, true);
       ytt.refreshWidthTo(seekToSeconds, ytplayer.getDuration());      
     }
