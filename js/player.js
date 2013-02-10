@@ -91,11 +91,11 @@
     }
 
     this.setUIToEnded = function() {
-      this.setToPause();
+      this.setUIToPaused();
     }
 
     this.setUIToStopped = function() {
-      this.setToPause();
+      this.setUIToPaused();
     }
 
     this.addVideoIdToPlaylist = function(videoId) {
@@ -282,6 +282,9 @@
           ytt.setUIToStopped();
         } else if (newState == ENDED) {
           ytt.setUIToEnded();
+          if (ytplayer.getDuration() == ytplayer.getCurrentTime()) {
+            w.playNext(ytplayer, ytt);
+          }
         } else if (newState == UNSTARTED) {
           ytt.setUIToEnded();          
         } else if (newState == BUFFERING) {
