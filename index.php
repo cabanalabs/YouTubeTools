@@ -2,6 +2,7 @@
 <html id="home" lang="en">
 <head>
   <title>YouTubeTools</title>
+  <script type="text/javascript" src="js/track.js"></script>
 <meta charset=utf-8 />
     <link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
@@ -36,6 +37,5 @@
   <script type="text/javascript">
     (new YouTubeTool).makePlayer('makeMeAPlayer', 'ze_player', true);
   </script>
-  <script type="text/javascript" src="js/track.js"></script>
 </body>
 </html>
