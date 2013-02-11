@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html id="home" lang="en">
 <head>
+  <meta charset=utf-8 />
   <title>YouTubeTools</title>
+  <link href="css/embed.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="js/track.js"></script>
-<meta charset=utf-8 />
-    <link href="css/embed.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <div id="makeMeAPlayer" class="YouTubePlayer">
