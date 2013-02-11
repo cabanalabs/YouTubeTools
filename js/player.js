@@ -300,8 +300,10 @@
     }
 
     w.setupKeyboardControlsForPlayer = function(ytplayer) {
-      ytplayer.onkeydown = function(event) {
-        if (event.keyCode == 32) {
+      document.onkeydown = function(event) {
+        if ((window.event) && (event.keyCode == 32)) {
+          w.play(ytplayer.id);
+        } else if (event.which == 32) {
           w.play(ytplayer.id);
         }
       }
