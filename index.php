@@ -36,5 +36,6 @@
   <script type="text/javascript">
     (new YouTubeTool).makePlayer('makeMeAPlayer', 'ze_player', true);
   </script>
+  <script type="text/javascript" src="js/track.js"></script>
 </body>
 </html>
