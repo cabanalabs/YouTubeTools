@@ -4,7 +4,7 @@
   <meta charset=utf-8 />
   <title>YouTubeTools</title>
   <link href="css/embed.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript" src="js/track.js"></script>
+  <?php include_once("track.php") ?>
 </head>
 <body>
   <div id="makeMeAPlayer" class="YouTubePlayer">
