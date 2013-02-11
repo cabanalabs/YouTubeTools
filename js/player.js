@@ -9,7 +9,9 @@
       this.seekTime = 0;  
       this.ytScreenId = screenId;
       var videoIds = w.getVideoIdsFromAddressBar();
-      this.currentVideoId = (videoIds.length > 0) ? videoIds[0] : null;
+
+      if (videoIds.length == 0) { videoIds = ['8bqKXN3-cY4'] }; // Set default video.
+      this.currentVideoId = videoIds[0];
       this.resetScreen();
       this.playlist = {};
       this.videoIndexes = [];
