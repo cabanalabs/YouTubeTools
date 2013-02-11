@@ -4,8 +4,11 @@ html {
   font-family: helvetica;
 }
 
+body {
+ margin: 0px;
+}
+
 .YouTubePlayer {
-  margin-top:50px;
   width: 560px;
   background-color:black;
   display:inline-block;
@@ -110,7 +113,7 @@ html {
 
 .List {
  color: white;
- height: 175px;
+ height: 145px;
  overflow: auto;
 }
 

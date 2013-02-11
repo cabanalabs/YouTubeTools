@@ -43,6 +43,9 @@
       
       this.addVideoButton = document.getElementById(this.containerId).getElementsByClassName('AddVideoButton')[0];
       this.addVideoButton.setAttribute('onClick', "addVideoToPlaylist('"+this.ytScreenId+"')");
+      
+      this.embedButton = document.getElementById(this.containerId).getElementsByClassName('EmbedVideoButton')[0];
+      this.embedButton.setAttribute('onClick', "embed('"+this.ytScreenId+"')");
     }
 
     this.highlightCurrentVideo = function() {
@@ -57,7 +60,7 @@
     this.resetScreen = function() {
       swfobject.embedSWF(
         'http://www.youtube.com/apiplayer?version=3&enablejsapi=1&playerapiid='+this.ytScreenId,
-        this.ytScreenId, "640", "360", "9", null,  null, 
+        this.ytScreenId, "560", "315", "9", null,  null, 
         { allowScriptAccess: "always", allowFullScreen: 'true' }, 
         { id: this.ytScreenId, name: this.ytScreenId }
       );      
@@ -347,13 +350,16 @@
       }
     }
 
-    w.updateAddressBar = function(videoIndexes) {
+    w.getPlaylistQueryString = function(videoIndexes) {
       var playlistQueryString = '?v=';
       for (index in videoIndexes) {
         playlistQueryString += videoIndexes[index]+',';
       }
-      playlistQueryString = playlistQueryString.substr(0, playlistQueryString.length - 1);
-      window.history.replaceState('Object', 'Video Player', playlistQueryString);
+      return playlistQueryString.substr(0, playlistQueryString.length - 1);
+    }
+
+    w.updateAddressBar = function(videoIndexes) {
+      window.history.replaceState('Object', 'Video Player', getPlaylistQueryString(videoIndexes));
     }
 
     w.getVideoIdsFromAddressBar = function() {
@@ -444,6 +450,14 @@
       delete(ytt.playlist[videoId]);
       ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(videoId), 1);
       updateAddressBar(ytt.videoIndexes);
+    }
+
+    w.embed = function(playerId) {
+      var ytplayer = document.getElementById(playerId);
+      var ytt = w.youTubeTools[playerId];
+      var videoInput = document.getElementById(ytt.containerId).getElementsByClassName('VideoUrl')[0];
+      videoInput.value = '<iframe width="560" height="560" src="http://'+window.location.hostname+window.location.pathname+'e.php'+
+        getPlaylistQueryString(ytt.videoIndexes)+'"></iframe>';
     }
   };
 })(window);
