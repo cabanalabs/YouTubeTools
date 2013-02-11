@@ -16,8 +16,26 @@ html {
   display:block;
   width:100%;
 }
+.YouTubePlayer:-moz-full-screen {
+  margin-top:0px;
+  display:block;
+  width:100%;
+}
+.YouTubePlayer:-full-screen {
+  margin-top:0px;
+  display:block;
+  width:100%;
+}
 
 .YouTubePlayer:-webkit-full-screen .YouTubePlayerScreen {
+  width:100%;
+  height:100%;
+}
+.YouTubePlayer:-moz-full-screen .YouTubePlayerScreen {
+  width:100%;
+  height:100%;
+}
+.YouTubePlayer:-full-screen .YouTubePlayerScreen {
   width:100%;
   height:100%;
 }
@@ -28,8 +46,36 @@ html {
   top: 0px;
   position:absolute;
 }
+.YouTubePlayer:-moz-full-screen .DefaultControls {
+  z-index:2;
+  display:block;
+  top: 0px;
+  position:absolute;
+}
+.YouTubePlayer:-full-screen .DefaultControls {
+  z-index:2;
+  display:block;
+  top: 0px;
+  position:absolute;
+}
 
 .YouTubePlayer:-webkit-full-screen .Progress {
+  z-index:3;
+  display:block;
+  top: 27px;
+  position:absolute;
+  width:100%;
+  height:18px;
+}
+.YouTubePlayer:-moz-full-screen .Progress {
+  z-index:3;
+  display:block;
+  top: 27px;
+  position:absolute;
+  width:100%;
+  height:18px;
+}
+.YouTubePlayer:-full-screen .Progress {
   z-index:3;
   display:block;
   top: 27px;

@@ -39,7 +39,7 @@
       this.timePassed = document.getElementById(this.containerId).getElementsByClassName('TimePassed')[0];
 
       this.fullScreenButton = document.getElementById(this.containerId).getElementsByClassName('FullScreenButton')[0];
-      this.fullScreenButton.setAttribute('onClick', "fullScreen('"+this.ytScreenId+"')");
+      this.fullScreenButton.setAttribute('onClick', "goFullScreen('"+this.ytScreenId+"')");
       
       this.addVideoButton = document.getElementById(this.containerId).getElementsByClassName('AddVideoButton')[0];
       this.addVideoButton.setAttribute('onClick', "addVideoToPlaylist('"+this.ytScreenId+"')");
@@ -236,7 +236,7 @@
       }
     }
 
-    w.fullScreen = function(playerId) {
+    w.goFullScreen = function(playerId) {
       var ytt = w.youTubeTools[playerId];
       var c = document.getElementById(ytt.containerId);
       if (c.requestFullScreen) {
