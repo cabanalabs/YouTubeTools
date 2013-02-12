@@ -21,7 +21,7 @@
     </div>
     <div class="Playlist">
       <div class="PlaylistControls">
-        <input class="VideoUrl" type="textbox" />
+        <input class="VideoUrl" type="textbox" placeholder="Address of a YouTube video"/>
         <a href="javascript:void(0);" class="AddVideoButton"><img src="images/btnAddToPlaylist.png" /></a>
         <a href="javascript:void(0);" class="EmbedVideoButton"><img src="images/btnEmbed.png" /></a>
       </div>
