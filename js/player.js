@@ -4,7 +4,8 @@
   var w = window;
   w.youTubeTools = ( typeof x != 'undefined' && x instanceof Object ) ? x : {};
   w.YouTubeTool = function() {
-    this.makePlayer = function(containerId, screenId, setDefaultActions) {
+    this.makePlayer = function(containerId, screenId, setDefaultStateToPlay) {
+      this.defaultToPlay = setDefaultStateToPlay;
       this.containerId = containerId;
       this.seekTime = 0;  
       this.ytScreenId = screenId;
@@ -18,10 +19,8 @@
       this.resetPlayOrder();
       
       this.playMode = w.getPlayMode();
+      this.setDefaultActions();
 
-      if (setDefaultActions == true) {
-        this.setDefaultActions();
-      }
       w.youTubeTools[this.ytScreenId] = this;
       this.setPlayOrderButton();
 
@@ -375,6 +374,9 @@
 
       registerStateChanges(ytplayer, ytt)
       resetPlaybackForPlayer(ytplayer, ytt);
+      if (! ytt.defaultToPlay) {
+        ytplayer.pauseVideo();
+      }
       setupKeyboardControlsForPlayer(ytplayer);
     }
 

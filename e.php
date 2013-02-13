@@ -36,7 +36,7 @@
 
   <script type="text/javascript" src="js/player.js"></script>
   <script type="text/javascript">
-    (new YouTubeTool).makePlayer('makeMeAPlayer', 'ze_player', true);
+    (new YouTubeTool).makePlayer('makeMeAPlayer', 'ze_player', false);
   </script>
 </body>
 </html>
