@@ -2,7 +2,7 @@
 <html id="home" lang="en">
 <head>
   <meta charset=utf-8 />
-  <title>YouTubeTools</title>
+  <title>Playr.me</title>
   <link href="css/embed.css" rel="stylesheet" type="text/css">
   <?php include_once("track.php") ?>
 </head>
