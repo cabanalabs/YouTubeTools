@@ -217,7 +217,7 @@ input:-moz-placeholder { color:#333; }
  background-color: #222;
 }
 
-.AddVideoButton, .EmbedVideoButton {
+.AddVideoButton, .EmbedVideoButton, .RandomizeButton {
   display: inline-block;
   vertical-align: top;
 }

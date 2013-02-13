@@ -211,12 +211,17 @@ body {
   padding-left:10px;
 }
 
+::-webkit-input-placeholder { color:#333; }
+::-moz-placeholder { color:#333; } /* firefox 19+ */
+:-ms-input-placeholder { color:#333; } /* ie */
+input:-moz-placeholder { color:#333; }
+
 .VideoUrl:focus {
  border: none;
  background-color: #222;
 }
 
-.AddVideoButton, .EmbedVideoButton {
+.AddVideoButton, .EmbedVideoButton, .RandomizeButton {
   display: inline-block;
   vertical-align: top;
 }

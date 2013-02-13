@@ -15,11 +15,15 @@
       this.resetScreen();
       this.playlist = {};
       this.videoIndexes = [];
+      this.resetPlayOrder();
+      
+      this.playMode = w.getPlayMode();
 
       if (setDefaultActions == true) {
         this.setDefaultActions();
       }
       w.youTubeTools[this.ytScreenId] = this;
+      this.setPlayOrderButton();
 
       for (index in videoIds) {
         this.addVideoIdToPlaylist(videoIds[index]);
@@ -48,6 +52,9 @@
       
       this.embedButton = document.getElementById(this.containerId).getElementsByClassName('EmbedVideoButton')[0];
       this.embedButton.setAttribute('onClick', "embed('"+this.ytScreenId+"')");
+
+      this.switchPlayOrderButton = document.getElementById(this.containerId).getElementsByClassName('RandomizeButton')[0];
+      this.switchPlayOrderButton.setAttribute('onClick', "switchPlayOrder('"+this.ytScreenId+"')");
     }
 
     this.highlightCurrentVideo = function() {
@@ -56,6 +63,7 @@
           this.playlist[videoId].element.className = 'ListElement';
         }
         this.playlist[this.currentVideoId].element.className = 'ListElement Playing';
+        this.playlist[this.currentVideoId].element.scrollIntoView();
       }
     }
 
@@ -186,6 +194,18 @@
       }
     }
 
+    this.setPlayOrderButton = function() {
+      if (this.playMode == 'Continuous') {
+        this.switchPlayOrderButton.innerHTML = '<img src="images/btnContinuous.png">';
+      } else {
+        this.switchPlayOrderButton.innerHTML = '<img src="images/btnRandom.png">';
+      }
+    }
+
+    this.resetPlayOrder = function() {
+      this.playedSoFar = [this.currentVideoId];
+    }
+
     w.zeroPad = function(number) {
       return (number > 9 ? number : '0'+number);
     }
@@ -247,10 +267,27 @@
       }
     }
 
+    w.arrayDiff = function(outside, inside) {
+      return outside.filter(function(i) {return !(inside.indexOf(i) > -1);});
+    };
+
+    w.arrayGetRandom = function(a) {
+      return a[Math.floor(Math.random() * a.length)];
+    };
+
+
     w.playNext = function(ytplayer, ytt) {
       var currentVideoIndex = ytt.videoIndexes.indexOf(ytt.currentVideoId);
-      if (currentVideoIndex < (ytt.videoIndexes.length - 1)) {
+      if ((ytt.playMode == 'Continuous') && (currentVideoIndex < (ytt.videoIndexes.length - 1))) {
         ytt.currentVideoId = ytt.videoIndexes[currentVideoIndex + 1];
+        ytt.seekTime = 0.0;
+        w.resetPlaybackForPlayer(ytplayer, ytt);
+      } else if (ytt.playMode == 'Random') {
+        if (ytt.playedSoFar.length == ytt.videoIndexes.length) {
+          ytt.resetPlayOrder();
+        }
+        ytt.currentVideoId = arrayGetRandom(arrayDiff(ytt.videoIndexes, ytt.playedSoFar));
+        ytt.playedSoFar.push(ytt.currentVideoId);
         ytt.seekTime = 0.0;
         w.resetPlaybackForPlayer(ytplayer, ytt);
       }
@@ -345,7 +382,7 @@
       var match = address.match(/([?\&]v\=)([\w-,]+)/gi);
       var videoIds = [];
       if (match != null) {
-        var videoIds = match[0].substr(3).split(',')
+        var videoIds = match[0].substr(3).split(',');
         for (index in videoIds) {
           videoIds.push(videoIds[index]);
         }
@@ -462,6 +499,10 @@
       ytt.playlist[videoId].element.parentNode.removeChild(ytt.playlist[videoId].element);
       delete(ytt.playlist[videoId]);
       ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(videoId), 1);
+      if (ytt.indexOf(videoId) != -1) { 
+        ytt.playedSoFar.splice(ytt.playedSoFar.indexOf(videoId), 1) 
+      };
+
       updateAddressBar(ytt.videoIndexes);
     }
 
@@ -471,6 +512,30 @@
       var videoInput = document.getElementById(ytt.containerId).getElementsByClassName('VideoUrl')[0];
       videoInput.value = '<iframe width="560" height="560" src="http://'+window.location.hostname+window.location.pathname+'e.php'+
         getPlaylistQueryString(ytt.videoIndexes)+'"></iframe>';
+    }
+
+    w.getPlayMode = function() {
+      var retval = 'Continuous';
+      var match = window.location.toString().match(/([?\&]mode\=)(Continuous|Random)/gi);
+      var videoIds = [];
+      if (match != null) {
+        var playMode = match[0].substr(6); 
+        alert(playMode);
+      }
+      return retval;
+    }
+
+    w.switchPlayOrder = function(playerId) {
+      var ytplayer = document.getElementById(playerId);
+      var ytt = w.youTubeTools[playerId];
+      
+      if (ytt.playMode == 'Random') {
+        ytt.playMode = 'Continuous';
+      } else {
+        ytt.playMode = 'Random';
+        ytt.resetPlayOrder();
+      }
+      ytt.setPlayOrderButton();
     }
   };
 })(window);
