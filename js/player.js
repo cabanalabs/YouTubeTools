@@ -117,30 +117,40 @@
         var list = document.getElementById(this.containerId).getElementsByClassName('List')[0];
         list.appendChild(newItem);
         
-        this.playlist[videoId] = {
-          'id': videoId,
-          'element': newItem
-        };
-
         if (this.videoIndexes.indexOf(videoId) == -1) {
+          this.playlist[videoId] = {
+            'id': videoId,
+            'element': newItem,
+            'title': null
+          };
+
           this.videoIndexes.push(videoId);
+          this.playlist[videoId]['index'] = this.videoIndexes.length; 
+
+          this.setupPlaylistControlsForVideoId(videoId);
+          this.setTitle(videoId);
         }
 
-        this.setupPlaylistControlsForVideoId(videoId);
-        this.replaceVideoIdWithTitle(videoId);
         retval = true;
       }
       return retval;
     }
 
-    this.replaceVideoIdWithTitle = function(videoId) {
+    this.getTitleFromSource = function(videoId) {
       var url = 'https://gdata.youtube.com/feeds/api/videos/'+videoId+'?v=2&alt=json';
       var xmlHttp = new XMLHttpRequest();
       xmlHttp.open( "GET", url, false );
       xmlHttp.send( null );
       var response = xmlHttp.responseText;
       var videoFunc = new Function('return '+response);
-      this.playlist[videoId].element.getElementsByTagName('span')[0].innerHTML = videoFunc().entry.title['$t'];
+      return videoFunc().entry.title['$t'];
+    }
+
+    this.setTitle = function(videoId) {
+      if (this.playlist[videoId].title == null) {
+        this.playlist[videoId].title = this.getTitleFromSource(videoId);
+      }
+      this.playlist[videoId].element.getElementsByTagName('span')[0].innerHTML = this.playlist[videoId]['index'] +' - ' + this.playlist[videoId].title;
     }
 
 
@@ -166,6 +176,8 @@
       var indexTwo = this.videoIndexes.indexOf(videoIdTwo);
       this.videoIndexes[indexOne] = videoIdTwo;
       this.videoIndexes[indexTwo] = videoIdOne;
+      this.playlist[videoIdOne].index = indexTwo+1;
+      this.playlist[videoIdTwo].index = indexOne+1;
     }
 
     w.zeroPad = function(number) {
@@ -409,14 +421,15 @@
         dragSourceElement.className = this.className;
         var dragSourceVideoId = dragSourceElement.getElementsByClassName('VideoId')[0].value;
         ytt.playlist[dragSourceVideoId].element = dragSourceElement;
-        ytt.playlist[dragSourceVideoId].id = dragSourceVideoId;
 
         this.innerHTML = e.dataTransfer.getData('text/html');
         this.className = e.dataTransfer.getData('classes');
         var videoId = this.getElementsByClassName('VideoId')[0].value;
         ytt.playlist[videoId].element = this;
-        ytt.playlist[videoId].id = videoId;
+
         ytt.switchVideoOrder(videoId, dragSourceVideoId);
+        ytt.setTitle(dragSourceVideoId);
+        ytt.setTitle(videoId);
         w.updateAddressBar(ytt.videoIndexes);
       }
       return false;
