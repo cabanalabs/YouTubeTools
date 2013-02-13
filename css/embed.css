@@ -172,7 +172,7 @@ body {
 }
 
 .ListElement.over {
-  border: 1px dashed gray;
+  border-top: 2px solid gray;
 }
 
 .Playing {
