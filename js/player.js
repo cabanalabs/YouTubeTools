@@ -103,9 +103,7 @@
       this.setUIToPaused();
     }
 
-    this.addVideoIdToPlaylist = function(videoId) {
-      var retval = false;
-      if (this.playlist[videoId] == null) {
+    this.getNewVideoNode = function(videoId) {
         var newItem = document.createElement('div');
         newItem.className = 'ListElement';
         newItem.draggable = true;
@@ -114,6 +112,13 @@
           '<input type="hidden" name="videoId" class="VideoId" value="'+videoId+'" />\n' +
           '<a href="javascript:void(0);" class="RemoveButton"><img src="images/btnRemove.png" /></a>\n' +
           '<a href="javascript:void(0);" class="DragButton"><img src="images/btnDrag.png" /></a>';
+        return newItem;
+    }
+
+    this.addVideoIdToPlaylist = function(videoId) {
+      var retval = false;
+      if (this.playlist[videoId] == null) {
+        var newItem = this.getNewVideoNode(videoId);
         var list = document.getElementById(this.containerId).getElementsByClassName('List')[0];
         list.appendChild(newItem);
         
@@ -171,13 +176,14 @@
       removeButton.setAttribute('onClick', "removeFromPlaylist('"+this.ytScreenId+"', '"+videoId+"')");
     }
 
-    this.switchVideoOrder = function(videoIdOne, videoIdTwo) {
-      var indexOne = this.videoIndexes.indexOf(videoIdOne);
-      var indexTwo = this.videoIndexes.indexOf(videoIdTwo);
-      this.videoIndexes[indexOne] = videoIdTwo;
-      this.videoIndexes[indexTwo] = videoIdOne;
-      this.playlist[videoIdOne].index = indexTwo+1;
-      this.playlist[videoIdTwo].index = indexOne+1;
+    this.updateVideoOrder = function(videoId) {
+      var startIndex = this.videoIndexes.indexOf(videoId);
+      startIndex = startIndex > 0 ? startIndex : 0;
+      for (var i = startIndex; i < this.videoIndexes.length; i++) {
+        var videoId = this.videoIndexes[i];
+        this.playlist[videoId].index = i+1;
+        this.setTitle(videoId);
+      }
     }
 
     w.zeroPad = function(number) {
@@ -386,9 +392,6 @@
     w.handleDragStart = function(e) {
       this.style.opacity = '0.8';  // this / e.target is the source node.
       dragSourceElement = this;
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/html', this.innerHTML);
-      e.dataTransfer.setData('classes', this.className);
     }
 
     w.handleDragEnter = function(e) {
@@ -416,20 +419,13 @@
         var playerId = this.getElementsByClassName('PlayerId')[0].value;
         var ytt = w.youTubeTools[playerId];
 
-        // Set the source column's HTML to the HTML of the column we dropped on.
-        dragSourceElement.innerHTML = this.innerHTML;
-        dragSourceElement.className = this.className;
-        var dragSourceVideoId = dragSourceElement.getElementsByClassName('VideoId')[0].value;
-        ytt.playlist[dragSourceVideoId].element = dragSourceElement;
-
-        this.innerHTML = e.dataTransfer.getData('text/html');
-        this.className = e.dataTransfer.getData('classes');
         var videoId = this.getElementsByClassName('VideoId')[0].value;
-        ytt.playlist[videoId].element = this;
-
-        ytt.switchVideoOrder(videoId, dragSourceVideoId);
-        ytt.setTitle(dragSourceVideoId);
-        ytt.setTitle(videoId);
+        var dragSourceVideoId = dragSourceElement.getElementsByClassName('VideoId')[0].value;
+        this.parentNode.insertBefore(dragSourceElement, this);
+        
+        ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(dragSourceVideoId), 1);
+        ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(videoId), 0, dragSourceVideoId);
+        ytt.updateVideoOrder(dragSourceVideoId);
         w.updateAddressBar(ytt.videoIndexes);
       }
       return false;
