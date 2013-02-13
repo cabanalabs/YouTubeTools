@@ -87,6 +87,7 @@
           parent.refreshWidthTo(ytplayer.getCurrentTime(), ytplayer.getDuration());
         },1000);
       }
+      window.document.title = 'Playr.me: '+this.playlist[this.currentVideoId].title;
     }
 
     this.refreshWidthTo = function(seekTime, totalTime) {
