@@ -334,9 +334,6 @@
           ytt.setUIToPlaying();
         } else if (newState == PAUSED) {          
           ytt.setUIToPaused();
-          if (ytplayer.getDuration() == ytplayer.getCurrentTime()) {
-            w.playNext(ytplayer, ytt);
-          }
         } else if (newState == STOPPED) {
           ytt.setUIToStopped();
         } else if (newState == ENDED) {
