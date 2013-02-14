@@ -499,10 +499,11 @@
       ytt.playlist[videoId].element.parentNode.removeChild(ytt.playlist[videoId].element);
       delete(ytt.playlist[videoId]);
       ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(videoId), 1);
-      if (ytt.indexOf(videoId) != -1) { 
+      if (ytt.videoIndexes.indexOf(videoId) != -1) { 
         ytt.playedSoFar.splice(ytt.playedSoFar.indexOf(videoId), 1) 
       };
 
+      ytt.updateVideoOrder();
       updateAddressBar(ytt.videoIndexes);
     }
 
