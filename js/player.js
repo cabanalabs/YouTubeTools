@@ -27,7 +27,7 @@
       for (index in videoIds) {
         this.addVideoIdToPlaylist(videoIds[index]);
       };
-      w.updateAddressBar(this.videoIndexes);
+      w.updateAddressBar('open', this);
     }
     
     this.setDefaultActions = function() {
@@ -401,7 +401,7 @@
             ytt.currentVideoId = videoIds[0];
             resetPlaybackForPlayer(ytplayer, ytt);
           }
-          updateAddressBar(ytt.videoIndexes);
+          updateAddressBar('add', ytt);
           videoInput.value = '';
         }
       } else {
@@ -417,8 +417,22 @@
       return playlistQueryString.substr(0, playlistQueryString.length - 1);
     }
 
-    w.updateAddressBar = function(videoIndexes) {
-      window.history.replaceState('Object', 'Video Player', getPlaylistQueryString(videoIndexes));
+    w.updateAddressBar = function(action, ytt) {
+      var list = document.getElementById(ytt.containerId).getElementsByClassName('List')[0];
+      var leDate = new Date;
+      var playerState = {
+        playerId: ytt.ytScreenId,
+        videoIndexes: ytt.videoIndexes,
+      };
+      window.history.pushState(playerState, 'playr.me', getPlaylistQueryString(ytt.videoIndexes));
+    }
+
+    window.onpopstate = function(event) {
+      if (event.state != null) {
+        alert(event.state.playerId);
+      }
+      // var ytplayer = document.getElementById(event.state.playerId);
+      // var ytt = w.youTubeTools[playerId];
     }
 
     w.getVideoIdsFromAddressBar = function() {
@@ -463,7 +477,7 @@
         ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(dragSourceVideoId), 1);
         ytt.videoIndexes.splice(ytt.videoIndexes.indexOf(videoId), 0, dragSourceVideoId);
         ytt.updateVideoOrder(dragSourceVideoId);
-        w.updateAddressBar(ytt.videoIndexes);
+        w.updateAddressBar('reorder', [videoId, dragSourceVideoId]);
       }
       return false;
     }
@@ -504,7 +518,7 @@
       };
 
       ytt.updateVideoOrder();
-      updateAddressBar(ytt.videoIndexes);
+      updateAddressBar('remove', ytt);
     }
 
     w.embed = function(playerId) {
