@@ -4,98 +4,23 @@ html {
   font-family: helvetica;
 }
 
-.YouTubePlayer {
+div#player {
   margin-top:50px;
   width: 560px;
   background-color:black;
   display:inline-block;
 }
 
-.YouTubePlayer:-webkit-full-screen {
-  margin-top:0px;
-  display:block;
-  width:100%;
-}
-.YouTubePlayer:-moz-full-screen {
-  margin-top:0px;
-  display:block;
-  width:100%;
-}
-.YouTubePlayer:-full-screen {
-  margin-top:0px;
-  display:block;
-  width:100%;
-}
-
-.YouTubePlayer:-webkit-full-screen .YouTubePlayerScreen {
-  width:100%;
-  height:100%;
-}
-.YouTubePlayer:-moz-full-screen .YouTubePlayerScreen {
-  width:100%;
-  height:100%;
-}
-.YouTubePlayer:-full-screen .YouTubePlayerScreen {
-  width:100%;
-  height:100%;
-}
-
-.YouTubePlayer:-webkit-full-screen .DefaultControls {
-  z-index:2;
-  display:block;
-  top: 0px;
-  position:absolute;
-}
-.YouTubePlayer:-moz-full-screen .DefaultControls {
-  z-index:2;
-  display:block;
-  top: 0px;
-  position:absolute;
-}
-.YouTubePlayer:-full-screen .DefaultControls {
-  z-index:2;
-  display:block;
-  top: 0px;
-  position:absolute;
-}
-
-.YouTubePlayer:-webkit-full-screen .Progress {
-  z-index:3;
-  display:block;
-  top: 27px;
-  position:absolute;
-  width:100%;
-  height:18px;
-}
-.YouTubePlayer:-moz-full-screen .Progress {
-  z-index:3;
-  display:block;
-  top: 27px;
-  position:absolute;
-  width:100%;
-  height:18px;
-}
-.YouTubePlayer:-full-screen .Progress {
-  z-index:3;
-  display:block;
-  top: 27px;
-  position:absolute;
-  width:100%;
-  height:18px;
-}
-
-.DefaultControls {
-  text-align: left;
+div#screenContainer {
+  width:560px;
+  height:315px;
+  padding:0px;
+  margin:0px;
   display:inline-block;
-  background-image: url(../images/spacer.png); 
-  width: 100%;
-  padding-top:2px;
-}
-.DefaultControls a {
-  vertical-align: top;
+  background-color:black;
 }
 
-.ProgressBar {
+div#progressBox {
   text-align: left;
   display:inline-block;
   vertical-align: top;
@@ -105,7 +30,14 @@ html {
   height:18px;
 }
 
-.ProgressSoFar {
+span#progressBar {
+  background-color: #585858;
+  display:inline-block;
+  width:100%;
+  height:100%;
+}
+
+span#progressSoFar {
   text-align: left;
   display: inline-block;
   background-color: #686868;
@@ -113,7 +45,7 @@ html {
   width: 0px;
 }
 
-.TimePassed {
+span#timePassed {
   display:inline-block;
   color: gray;
   font-weight: bold;
@@ -123,81 +55,20 @@ html {
   margin-right:5px;
 }
 
-.Bookmark {
-  position: absolute;
+div#controls {
+  text-align: left;
   display:inline-block;
-  background-color: white;
-  height: 18px;
-  width: 1px;    
-}
-
-.PauseButton {
-  display: none;
-}
-
-.FullScreenButton {
-  float: right;
-  margin-right:3px;
-}
-
-.Playlist {
-  vertical-align: top;
+  background-image: url(../images/spacer.png); 
   width: 100%;
-  text-align: left;
-  margin-top: 10px;
+  padding-top:2px;
 }
 
-[draggable] {
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  user-select: none;
-}
-
-.List {
- color: white;
- height: 175px;
- overflow: auto;
-}
-
-.ListElement {
-  width: 523px;
-  margin-top:5px;
-  text-align: right;
-  color: gray;
-}
-
-.ListElement.over {
-  border-top: 2px solid gray;
-}
-
-.Playing {
-  color: white;
-}
-
-.ListElement span {
-  width: 455px;
-  vertical-align: top;
-  padding-left: 5px;
-  font-size: 14px;
-  display: inline-block;
-  line-height: 27px;
-  background-color: #111;
-  text-align: left;
-}
-
-.RemoveButton, .BtnDrag {
-  position: relative;
-  display: inline-block;
+div#controls a {
   vertical-align: top;
 }
 
-.PlaylistControls {
-  margin-top:5px;
-}
-
-.VideoUrl {
-  width:450px;
+#txtVideoUrl {
+  width:487px;
   margin:0px;
   height: 25px;
   border: 0px; 
@@ -212,13 +83,93 @@ html {
 :-ms-input-placeholder { color:#333; } /* ie */
 input:-moz-placeholder { color:#333; }
 
-.VideoUrl:focus {
+#txtVideoUrl:focus {
  border: none;
  background-color: #222;
 }
 
-.AddVideoButton, .EmbedVideoButton, .RandomizeButton {
+#btnAddVideo, #btnRandom, #btnContinuous {
   display: inline-block;
   vertical-align: top;
 }
 
+#btnPause, #btnRandom, #btnEndFullScreen {
+  display: none;
+}
+
+#btnFullScreen, #btnEndFullScreen {
+  float: right;
+  margin-right:3px;
+}
+
+#playlistControls {
+  margin-top:5px;
+}
+
+.List {
+ color: white;
+ height: 175px;
+ overflow: auto;
+}
+
+.ListElement {
+  margin-top:5px;
+  text-align: right;
+  color: gray;
+}
+
+.ListElement.over {
+  border-top: 2px solid gray;
+}
+
+.Playing {
+  color: white;
+}
+
+.ListElement span {
+  vertical-align: top;
+  padding-left: 5px;
+  padding-right:5px;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 27px;
+  background-color: #111;
+  text-align: left;
+}
+
+.RemoveButton, .BtnDrag {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+
+/* Fullscreen junk */
+div#player.FullScreen {
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0px;
+  left:0px;
+  margin-top:0px;
+}
+
+div#player.FullScreen div#screenContainer {
+  width:100%;
+  height:100%;
+}
+
+div#player.FullScreen div#controls {
+  z-index:2;
+  display:block;
+  top: 0px;
+  position:absolute;
+}
+
+div#player.FullScreen div#progressBox {
+  z-index:3;
+  display:block;
+  top: 27px;
+  position:absolute;
+  width:100%;
+  height:18px;
+}

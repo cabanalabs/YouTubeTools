@@ -7,36 +7,31 @@
   <?php include_once("track.php") ?>
 </head>
 <body>
-  <div id="makeMeAPlayer" class="YouTubePlayer">
-    <div id="ze_player" class="YouTubePlayerScreen"/></div>
-    <div class="DefaultControls"/>
-      <a href="javascript:void(0);" class="PlayButton"><img src="images/btnPlay.png" /></a>
-      <a href="javascript:void(0);" class="PauseButton"><img src="images/btnPause.png" /></a>
-
-      <a href="javascript:void(0);" class="FullScreenButton"><img src="images/btnFullScreen.png" /></a>
-      <span class="TimePassed">00:00:00</span>
+  <div id="player">
+    <div id="screenContainer"><div id="playerScreen"></div></div>
+    <div id="controls">
+      <a id="btnPlay" href="javascript:void(0);"><img src="images/btnPlay.png" /></a>
+      <a id="btnPause" href="javascript:void(0);"><img src="images/btnPause.png" /></a>
+      <a id="btnFullScreen" href="javascript:void(0);"><img src="images/btnFullScreen.png" /></a>
+      <a id="btnEndFullScreen" href="javascript:void(0);"><img src="images/btnEndFullScreen.png" /></a>
+      <span id="timePassed">00:00:00</span>
     </div>
-    <div class="Progress">
-      <span class="ProgressBar"><span class="ProgressSoFar"></span></span>
+    <div id="progressBox">
+      <span id="progressBar"><span id="progressSoFar"></span></span>
     </div>
-    <div class="Playlist">
-      <div class="PlaylistControls">
-        <input class="VideoUrl" type="textbox" placeholder="Address of a YouTube video"/>
-        <a href="javascript:void(0);" class="AddVideoButton"><img src="images/btnAddToPlaylist.png" /></a>
-        <a href="javascript:void(0);" class="EmbedVideoButton"><img src="images/btnEmbed.png" /></a>
-        <a href="javascript:void(0);" class="RandomizeButton"><img src="images/btnRandom.png" /></a>
+    <div id="playlist">
+      <div id="playlistControls">
+        <input id="txtVideoUrl" type="textbox" placeholder="Address of a YouTube video"/>
+        <a href="javascript:void(0);" id="btnAddVideo"><img src="images/btnAddToPlaylist.png" /></a>
+        <a href="javascript:void(0);" id="btnContinuous"><img src="images/btnContinuous.png" /></a>
+        <a href="javascript:void(0);" id="btnRandom"><img src="images/btnRandom.png" /></a>        
       </div>
-      <div class="List"></div>
+      <div id="list"></div>
     </div>
   </div>
-
   <!-- load all the libraries first -->
   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
   <script type="text/javascript" src="js/swfobject.js"></script>
-
   <script type="text/javascript" src="js/player.js"></script>
-  <script type="text/javascript">
-    (new YouTubeTool).makePlayer('makeMeAPlayer', 'ze_player', true);
-  </script>
 </body>
 </html>
