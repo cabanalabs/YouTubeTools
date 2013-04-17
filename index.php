@@ -29,6 +29,11 @@
       <div id="list"></div>
     </div>
   </div>
+  <div id="videoSearch">
+    <input id="txtVideoSearch" type="textbox" placeholder="Search YouTube"/>
+    <div id="results"></div>
+  </div>
+
   <!-- load all the libraries first -->
   <script type="text/javascript" src="http://www.google.com/jsapi"></script>
   <script type="text/javascript" src="js/swfobject.js"></script>
