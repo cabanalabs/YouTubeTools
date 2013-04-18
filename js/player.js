@@ -170,7 +170,7 @@
   }
 
   searchYouTube = function() {
-    var keywords = encodeURIComponent(txtVideoSearch.value);
+    var keywords = encodeURIComponent(txtVideoSearch.value.trim());
     if (keywords.length == 0) {
       resultsBox.innerHTML = '';
       lastKeywords = '';
