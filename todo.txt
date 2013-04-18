@@ -1,8 +1,10 @@
 To Do:
 ------
-- Make work in IE.
-- Make search lag a bit so the user can type in things. Only search after the user stops typing.
+- Show length of each search result entry.
+- Add a play button if someone wants to just play a song without adding it to the playlist. Maybe even highlight that entry on play (and unhighlight the rest).
 - Volume control.
+
+- Make work in IE.
 - Label browser history updates in a way that a user can then go back to a familiar place (Playr - Added / Removed "Shankar - Breathless"
 - Update browser history when a video is rearranged.
 - Update browser history when a video is either added or removed from the playlist.
