@@ -1,8 +1,8 @@
 To Do:
 ------
-- Refactor and clean up the code, since we only plan to have one player per window or iframe.
-- Youtube search.
 - Make work in IE.
-  - Label browser history updates in a way that a user can then go back to a familiar place (Playr - Added / Removed "Shankar - Breathless"
+- Make search lag a bit so the user can type in things. Only search after the user stops typing.
+- Volume control.
+- Label browser history updates in a way that a user can then go back to a familiar place (Playr - Added / Removed "Shankar - Breathless"
 - Update browser history when a video is rearranged.
 - Update browser history when a video is either added or removed from the playlist.

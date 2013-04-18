@@ -3,8 +3,10 @@
 (function(window) {
   var videoIndexes = [];
   var playlist = {};
+  var defaultVideoId = '8bqKXN3-cY4';
   var currentVideoId = null;
   var playedSoFar = [];
+  var lastKeywords = ''
 
   play = function() {
     video.playVideo();
@@ -116,7 +118,7 @@
     this.classList.remove('over');
     var videoId = this.getElementsByClassName('VideoId')[0].value;
     playVideoId(videoId);
-    document.body.scrollTop = document.documentElement.scrollTop = 0;
+    scrollToTop();
   }
 
   handleClick = function(e) {
@@ -162,10 +164,19 @@
     }
   }
 
+  restartPressTimer = function() {
+    window.clearTimeout(window.keyDownTimer);
+    window.keyDownTimer = window.setTimeout(searchYouTube, 350);
+  }
+
   searchYouTube = function() {
-    resultsBox.innerHTML = '';
     var keywords = encodeURIComponent(txtVideoSearch.value);
-    if (keywords.length > 0) {
+    if (keywords.length == 0) {
+      resultsBox.innerHTML = '';
+      lastKeywords = '';
+    } else if (keywords != lastKeywords) {
+      resultsBox.innerHTML = '';
+      lastKeywords = keywords;
       var yt_url='http://gdata.youtube.com/feeds/api/videos?q='+keywords+'&format=5&max-results=15&v=2';
       var httpRequest;
 
@@ -273,6 +284,10 @@
     return retval;
   }
 
+  var scrollToTop = function() {
+    document.body.scrollTop = document.documentElement.scrollTop = 0;
+  }
+
   var addVideoId = function(id) {    
     var retval = false;
     if (playlist[id] == null) {
@@ -296,6 +311,7 @@
       
       if (videoIndexes.length == 1) {
         playVideoId(id);
+        scrollToTop();
       }
       retval = true;
     }
@@ -453,7 +469,7 @@
     btnPlay.style.display = 'inline';
     btnPause.style.display = 'none';
     refreshWidthToCurrent();
-    clearInterval(window.timer);
+    window.clearInterval(window.timer);
     window.timer = undefined;    
   }
 
@@ -549,9 +565,9 @@
     btnContinuous.onclick = setPlayToRandom;
     btnRandom.onclick = setPlayToContinuous;
     progressBar.onclick = seek;
-    document.onkeydown = handleKeyDown;
+    videoContainer.onkeydown = handleKeyDown;
     videoContainer.onclick = pauseOrPlay;
-    txtVideoSearch.onkeyup = searchYouTube;
+    txtVideoSearch.onkeyup = restartPressTimer;
     addFullScreenEvents();
   }
 
@@ -595,9 +611,10 @@
     if (currentVideoId != null) {
       playOrResumeCurrentVideo();
     } else if (addVideoIds(getVideoIdsFromAddressBar())) {
-      // Rejoice!
-    } else {
-      addVideoId('8bqKXN3-cY4');
+      defaultVideoId = null;
+    } else if (defaultVideoId != null) {
+      addVideoId(defaultVideoId);
+      defaultVideoId = null;
     }
   }
 
