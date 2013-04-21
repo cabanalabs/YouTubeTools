@@ -3,7 +3,7 @@
 (function(window) {
   var videoIndexes = [];
   var playlist = {};
-  var defaultVideoId = '8bqKXN3-cY4';
+  var defaultVideoId = 'QcvjoWOwnn4';
   var currentVideoId = null;
   var playedSoFar = [];
   var lastKeywords = '';
@@ -206,7 +206,7 @@
   var createResult = function(info) {
     var newItem = document.createElement('div');
     newItem.className = 'SearchResult';
-    newItem.innerHTML = '<div class="PreviewTitle" id="video_title_'+info['videoId']+'">'+info['title']+'</div>' +
+    newItem.innerHTML = '<div class="PreviewTitle" id="video_title_'+info['videoId']+'">'+info['title']+'<br />'+info['duration']+'</div>' +
         '<img class="videoPreview" src="'+info['thumbnail']+'" />\n'+
         '<a href="javascript:void(0);" class="SearchResultAddButton" onClick="addSearchResult(\''+info['videoId']+'\');"><img src="images/btnAddToPlaylist.png" /></a>' +
         '<a href="javascript:void(0);" class="SearchResultPlayButton" onClick="playPreview(this, \''+info['videoId']+'\');"><img src="images/btnPlay.png" /></a>';
@@ -216,13 +216,14 @@
   var showResults = function(response) {
     if (response.getElementsByTagName) {
       var resultSets = response.getElementsByTagName('group');
+      var durations = response.getElementsByTagName('duration');
       for(var i = 0; i < resultSets.length; i++) {
         createResult ({ 
           title : resultSets[i].getElementsByTagName('title')[0].childNodes[0].nodeValue,
           thumbnail : resultSets[i].getElementsByTagName('thumbnail')[0].attributes['url'].value,
-          videoId : resultSets[i].getElementsByTagName('videoid')[0].childNodes[0].nodeValue
+          videoId : resultSets[i].getElementsByTagName('videoid')[0].childNodes[0].nodeValue,
+          duration : convertSecondsToTime(resultSets[i].getElementsByTagName('duration')[0].attributes.getNamedItem('seconds').value)
         });
-        
       }
     } else {
       alert('no go');

@@ -1,7 +1,5 @@
 To Do:
 ------
-- Show length of each search result entry.
-- Add a play button if someone wants to just play a song without adding it to the playlist. Maybe even highlight that entry on play (and unhighlight the rest).
 - Volume control.
 
 - Make work in IE.

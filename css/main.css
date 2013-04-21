@@ -229,3 +229,9 @@ div#videoSearch {
   bottom:0px;
   left: 33px;  
 }
+
+span.VideoLength {
+  position: absolute;
+  bottom:0px;
+  left: 65px;
+}
