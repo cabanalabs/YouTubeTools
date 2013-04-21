@@ -118,7 +118,7 @@ input:-moz-placeholder { color:#555; }
   border-top: 2px solid gray;
 }
 
-.Playing {
+.Playing, .Played {
   color: white;
 }
 
@@ -211,14 +211,21 @@ div#videoSearch {
   margin-top:10px;
 }
 
-.SearchResult img {
+.SearchResult img.videoPreview {
   float:right;
   margin-right:5px;
   margin-top:5px;
+  max-width:120px;
 }
 
 .SearchResultAddButton {
   position: absolute;
-  bottom: 2px;
-  left: 2px;
+  bottom:0px;
+  left: 3px;
+}
+
+.SearchResultPlayButton {
+  position: absolute;
+  bottom:0px;
+  left: 33px;  
 }

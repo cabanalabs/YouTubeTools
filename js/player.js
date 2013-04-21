@@ -6,7 +6,7 @@
   var defaultVideoId = '8bqKXN3-cY4';
   var currentVideoId = null;
   var playedSoFar = [];
-  var lastKeywords = ''
+  var lastKeywords = '';
 
   play = function() {
     video.playVideo();
@@ -30,6 +30,12 @@
   addSearchResult = function(id) {
     addVideoIds([id]);
     updateAddressBar('add');
+  }
+
+  playPreview = function(playButton, id) {
+    currentVideoId = id;
+    playVideoId(id);
+    scrollToTop();
   }
 
   setPlayToRandom = function () {    
@@ -200,9 +206,10 @@
   var createResult = function(info) {
     var newItem = document.createElement('div');
     newItem.className = 'SearchResult';
-    newItem.innerHTML = '<div>'+info['title']+'</div>' +
-        '<img src="'+info['thumbnail']+'" />\n'+
-        '<a href="javascript:void(0);" class="SearchResultAddButton" onClick="addSearchResult(\''+info['videoId']+'\');"><img src="images/btnAddToPlaylist.png" /></a>';
+    newItem.innerHTML = '<div class="PreviewTitle" id="video_title_'+info['videoId']+'">'+info['title']+'</div>' +
+        '<img class="videoPreview" src="'+info['thumbnail']+'" />\n'+
+        '<a href="javascript:void(0);" class="SearchResultAddButton" onClick="addSearchResult(\''+info['videoId']+'\');"><img src="images/btnAddToPlaylist.png" /></a>' +
+        '<a href="javascript:void(0);" class="SearchResultPlayButton" onClick="playPreview(this, \''+info['videoId']+'\');"><img src="images/btnPlay.png" /></a>';
     resultsBox.appendChild(newItem);
   }
 
@@ -292,7 +299,7 @@
     var retval = false;
     if (playlist[id] == null) {
       var newItem = getNewVideoNode(id);
-      var list = document.getElementById('list');
+      var list = getElement('list');
       list.appendChild(newItem);
       
       if (videoIndexes.indexOf(id) == -1) {
@@ -375,7 +382,7 @@
 
   var updateAddressBar = function(action, vars) {
     vars = (typeof vars !== 'undefined') ? vars : null;
-    var list = document.getElementById('list');
+    var list = getElement('list');
     var leDate = new Date;
     var playerState = {
       videoIndexes: videoIndexes,
@@ -396,8 +403,14 @@
       for (videoId in playlist) {
         playlist[videoId].element.className = 'ListElement';
       }
-      playlist[currentVideoId].element.className = 'ListElement Playing';
-      playlist[currentVideoId].element.scrollIntoView();
+
+      if (playlist[currentVideoId]) {
+        playlist[currentVideoId].element.className = 'ListElement Playing';
+        playlist[currentVideoId].element.scrollIntoView();
+      } else {        
+        var titleElement = getElement('video_title_'+currentVideoId);
+        titleElement.className = 'PreviewTitle Played';
+      }
     }
   }  
 
@@ -605,7 +618,7 @@
   }
 
   onYouTubePlayerReady = function(playerId) {
-    video = document.getElementById(playerId);
+    video = getElement(playerId);
     setButtons();
 
     if (currentVideoId != null) {
