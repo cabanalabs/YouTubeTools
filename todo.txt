@@ -1,7 +1,5 @@
 To Do:
 ------
-- Volume control.
-
 - Make work in IE.
 - Label browser history updates in a way that a user can then go back to a familiar place (Playr - Added / Removed "Shankar - Breathless"
 - Update browser history when a video is rearranged.

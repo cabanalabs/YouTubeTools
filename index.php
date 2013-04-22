@@ -9,12 +9,13 @@
 <body>
   <div id="player">
     <div id="screenContainer"><div id="playerScreen"></div></div>
-    <div id="controls">
+    <div id="controls">      
       <a id="btnPlay" href="javascript:void(0);"><img src="images/btnPlay.png" /></a>
       <a id="btnPause" href="javascript:void(0);"><img src="images/btnPause.png" /></a>
+      <div id="volumeControl"><div id="slider"></div><div id="volumeBack"></div></div>
       <a id="btnFullScreen" href="javascript:void(0);"><img src="images/btnFullScreen.png" /></a>
-      <a id="btnEndFullScreen" href="javascript:void(0);"><img src="images/btnEndFullScreen.png" /></a>
-      <span id="timePassed">00:00:00</span>
+      <a id="btnEndFullScreen" href="javascript:void(0);"><img src="images/btnEndFullScreen.png" /></a>      
+      <span id="timePassed">00:00:00</span>      
     </div>
     <div id="progressBox">
       <span id="progressBar"><span id="progressSoFar"></span></span>

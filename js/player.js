@@ -27,6 +27,13 @@
     }
   }
 
+  setVolume = function() {
+    var newVolume = (getMousePositionX(event) - volumeControl.offsetLeft);
+    newVolume = newVolume > 100 ? 100 : newVolume;
+    slider.style.left = newVolume+'px';
+    video.setVolume(newVolume);
+  }
+
   addSearchResult = function(id) {
     addVideoIds([id]);
     updateAddressBar('add');
@@ -359,6 +366,8 @@
   var btnAddVideo = getElement('btnAddVideo');
   var btnRandom = getElement('btnRandom');
   var btnContinuous = getElement('btnContinuous');
+  var volumeControl = getElement('volumeControl');
+  var slider = getElement('slider');
   var videoStates = {
       UNSTARTED : -1,
       ENDED : 0,
@@ -582,6 +591,7 @@
     videoContainer.onkeydown = handleKeyDown;
     videoContainer.onclick = pauseOrPlay;
     txtVideoSearch.onkeyup = restartPressTimer;
+    volumeControl.onclick = setVolume;
     addFullScreenEvents();
   }
 

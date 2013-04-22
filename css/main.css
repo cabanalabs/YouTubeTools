@@ -45,6 +45,39 @@ span#progressSoFar {
   width: 0px;
 }
 
+div#volumeControl {
+  position:relative;
+  margin-bottom:4px;
+  display:inline-block;
+  height:19px;
+  width:104px; 
+  color: white;
+}
+
+div#volumeControl:hover {
+  background-color:#222;
+}
+
+div#volumeBack {
+  z-index:10;
+  position:absolute;
+  height:2px;
+  background-color:#333;
+  width:104px;
+  top:8px;
+  left:0px;
+}
+
+div#slider {
+  z-index:20;
+  position:absolute;
+  left:20px;
+  height:16px;
+  top:2px;
+  width:4px;
+  background-color: #999;
+}
+
 span#timePassed {
   display:inline-block;
   color: gray;
