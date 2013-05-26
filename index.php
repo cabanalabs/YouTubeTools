@@ -10,11 +10,11 @@
   <div id="player">
     <div id="screenContainer"><div id="playerScreen"></div></div><br />
     <div id="controls">      
-      <a id="btnPlay" href="javascript:void(0);"><img src="images/btnPlay.png" /></a>
-      <a id="btnPause" href="javascript:void(0);"><img src="images/btnPause.png" /></a>
-      <div id="volumeControl"><div id="slider"></div><div id="volumeBack"></div></div>
-      <a id="btnFullScreen" href="javascript:void(0);"><img src="images/btnFullScreen.png" /></a>
-      <a id="btnEndFullScreen" href="javascript:void(0);"><img src="images/btnEndFullScreen.png" /></a>      
+      <a id="btnPlay" href="javascript:void(0);" title="Play"><img src="images/btnPlay.png" /></a>
+      <a id="btnPause" href="javascript:void(0);" title="Pause"><img src="images/btnPause.png" /></a>
+      <div id="volumeControl" title="Click to Set Volume"><div id="slider"></div><div id="volumeBack"></div></div>
+      <a id="btnFullScreen" href="javascript:void(0);" title="Make Fullscreen"><img src="images/btnFullScreen.png" /></a>
+      <a id="btnEndFullScreen" href="javascript:void(0);" title="Exit Fullscreen"><img src="images/btnEndFullScreen.png" /></a>      
       <span id="timePassed">00:00:00</span>      
     </div><br />
     <div id="progressBox">
@@ -23,9 +23,9 @@
     <div id="playlist">
       <div id="playlistControls">
         <input id="txtVideoUrl" type="textbox" placeholder="Address of a YouTube video"/>
-        <a href="javascript:void(0);" id="btnAddVideo"><img src="images/btnAddToPlaylist.png" /></a>
-        <a href="javascript:void(0);" id="btnContinuous"><img src="images/btnContinuous.png" /></a>
-        <a href="javascript:void(0);" id="btnRandom"><img src="images/btnRandom.png" /></a>        
+        <a href="javascript:void(0);" id="btnAddVideo" title="Add youtube link to playlist"><img src="images/btnAddToPlaylist.png" /></a>
+        <a href="javascript:void(0);" id="btnContinuous" title="Switch to Random Playback"><img src="images/btnContinuous.png" /></a>
+        <a href="javascript:void(0);" id="btnRandom" title="Switch to Continuous Playback"><img src="images/btnRandom.png" /></a>        
       </div>
       <div id="list"></div>
     </div>

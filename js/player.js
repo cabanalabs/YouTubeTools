@@ -220,8 +220,8 @@
     newItem.className = 'SearchResult';
     newItem.innerHTML = '<div class="PreviewTitle" id="video_title_'+info['videoId']+'">'+info['title']+'<br />'+info['duration']+'</div>' +
         '<img class="videoPreview" src="'+info['thumbnail']+'" />\n'+
-        '<a href="javascript:void(0);" class="SearchResultAddButton" onClick="addSearchResult(\''+info['videoId']+'\');"><img src="images/btnAddToPlaylist.png" /></a>' +
-        '<a href="javascript:void(0);" class="SearchResultPlayButton" onClick="playPreview(this, \''+info['videoId']+'\');"><img src="images/btnPlay.png" /></a>';
+        '<a href="javascript:void(0);" class="SearchResultAddButton" title="Add to Playlist" onClick="addSearchResult(\''+info['videoId']+'\');"><img src="images/btnAddToPlaylist.png" /></a>' +
+        '<a href="javascript:void(0);" class="SearchResultPlayButton" title="Preview" onClick="playPreview(this, \''+info['videoId']+'\');"><img src="images/btnPlay.png" /></a>';
     resultsBox.appendChild(newItem);
   }
 
@@ -277,8 +277,8 @@
     newItem.draggable = true;
     newItem.innerHTML = '<span>'+videoId+'</span>\n' +
       '<input type="hidden" name="videoId" class="VideoId" value="'+videoId+'" />\n' +
-      '<a href="javascript:void(0);" class="RemoveButton"><img src="images/btnRemove.png" /></a>\n' +
-      '<a href="javascript:void(0);" class="DragButton"><img src="images/btnDrag.png" /></a>';
+      '<a href="javascript:void(0);" class="RemoveButton" title="Remove from Playlist"><img src="images/btnRemove.png" /></a>\n' +
+      '<a href="javascript:void(0);" class="DragButton" title="Click And Drag to Rearrange the Playlist"><img src="images/btnDrag.png" /></a>';
     return newItem;
   }
 

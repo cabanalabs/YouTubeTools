@@ -60,6 +60,7 @@ div#volumeControl {
 div#volumeControl:hover {
   top:4px;
   background-color:#222;
+  cursor: pointer;
 }
 
 div#volumeBack {
@@ -116,10 +117,11 @@ div#controls a {
   padding-right:10px;
 }
 
-::-webkit-input-placeholder { color:#999; }
-::-moz-placeholder { color:#999; } /* firefox 19+ */
-:-ms-input-placeholder { color:#999; } /* ie */
-input:-moz-placeholder { color:#999; }
+::-webkit-input-placeholder { color:#CC9933; }
+::-moz-placeholder { color:#CC9933; } /* firefox 19+ */
+:-ms-input-placeholder { color:#CC9933; } /* ie */
+::-o-input-placeholder { color:#CC9933; } /* ie */
+input:-moz-placeholder { color:#CC9933; }
 
 #btnAddVideo, #btnRandom, #btnContinuous {
   display: inline-block;
