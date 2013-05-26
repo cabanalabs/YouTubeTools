@@ -27,7 +27,7 @@
     }
   }
 
-  setVolume = function() {
+  setVolume = function(event) {
     var newVolume = (getMousePositionX(event) - volumeControl.offsetLeft);
     newVolume = newVolume > 100 ? 100 : newVolume;
     slider.style.left = newVolume+'px';

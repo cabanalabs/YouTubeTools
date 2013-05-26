@@ -6,9 +6,10 @@ html {
 
 div#player {
   margin-top:50px;
-  width: 560px;
   background-color:black;
   display:inline-block;
+  width:100%;
+  text-align: center;
 }
 
 div#screenContainer {
@@ -26,14 +27,14 @@ div#progressBox {
   vertical-align: top;
   background-color: #585858;
   display:inline-block;
-  width:100%;
+  width:560px;
   height:18px;
 }
 
 span#progressBar {
   background-color: #585858;
   display:inline-block;
-  width:100%;
+  width:560px;
   height:100%;
 }
 
@@ -46,6 +47,8 @@ span#progressSoFar {
 }
 
 div#volumeControl {
+  vertical-align:top;
+  top:4px;
   position:relative;
   margin-bottom:4px;
   display:inline-block;
@@ -55,6 +58,7 @@ div#volumeControl {
 }
 
 div#volumeControl:hover {
+  top:4px;
   background-color:#222;
 }
 
@@ -75,7 +79,7 @@ div#slider {
   height:16px;
   top:2px;
   width:4px;
-  background-color: #999;
+  background-color: #CC9933;
 }
 
 span#timePassed {
@@ -92,7 +96,7 @@ div#controls {
   text-align: left;
   display:inline-block;
   background-image: url(../images/spacer.png); 
-  width: 100%;
+  width: 560px;
   padding-top:2px;
 }
 
@@ -112,10 +116,10 @@ div#controls a {
   padding-right:10px;
 }
 
-::-webkit-input-placeholder { color:#555; }
-::-moz-placeholder { color:#555; } /* firefox 19+ */
-:-ms-input-placeholder { color:#555; } /* ie */
-input:-moz-placeholder { color:#555; }
+::-webkit-input-placeholder { color:#999; }
+::-moz-placeholder { color:#999; } /* firefox 19+ */
+:-ms-input-placeholder { color:#999; } /* ie */
+input:-moz-placeholder { color:#999; }
 
 #btnAddVideo, #btnRandom, #btnContinuous {
   display: inline-block;
@@ -262,9 +266,14 @@ div#videoSearch {
   bottom:0px;
   left: 33px;  
 }
+.SearchResultAddButton img, .SearchResultPlayButton img {
+  background-color: #333;
+}
+
 
 span.VideoLength {
   position: absolute;
   bottom:0px;
   left: 65px;
 }
+
