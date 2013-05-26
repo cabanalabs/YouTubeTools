@@ -187,6 +187,7 @@
     if (keywords.length == 0) {
       resultsBox.innerHTML = '';
       lastKeywords = '';
+      adjustPlaylistSize(8);
     } else if (keywords != lastKeywords) {
       resultsBox.innerHTML = '';
       lastKeywords = keywords;
@@ -210,6 +211,10 @@
     }
   }
 
+  var adjustPlaylistSize = function(offset) {
+    list.style.marginRight = player.offsetWidth - progressBar.offsetLeft - progressBar.offsetWidth + offset + 'px';
+  }
+
   var createResult = function(info) {
     var newItem = document.createElement('div');
     newItem.className = 'SearchResult';
@@ -224,6 +229,9 @@
     if (response.getElementsByTagName) {
       var resultSets = response.getElementsByTagName('group');
       var durations = response.getElementsByTagName('duration');
+      if (resultSets.length >= 4) {
+        adjustPlaylistSize(0);
+      }
       for(var i = 0; i < resultSets.length; i++) {
         createResult ({ 
           title : resultSets[i].getElementsByTagName('title')[0].childNodes[0].nodeValue,
@@ -307,7 +315,6 @@
     var retval = false;
     if (playlist[id] == null) {
       var newItem = getNewVideoNode(id);
-      var list = getElement('list');
       list.appendChild(newItem);
       
       if (videoIndexes.indexOf(id) == -1) {
@@ -368,6 +375,7 @@
   var btnContinuous = getElement('btnContinuous');
   var volumeControl = getElement('volumeControl');
   var slider = getElement('slider');
+  var list = getElement('list');
   var videoStates = {
       UNSTARTED : -1,
       ENDED : 0,
@@ -392,7 +400,6 @@
 
   var updateAddressBar = function(action, vars) {
     vars = (typeof vars !== 'undefined') ? vars : null;
-    var list = getElement('list');
     var leDate = new Date;
     var playerState = {
       videoIndexes: videoIndexes,
