@@ -191,7 +191,7 @@
     } else if (keywords != lastKeywords) {
       resultsBox.innerHTML = '';
       lastKeywords = keywords;
-      var yt_url='http://gdata.youtube.com/feeds/api/videos?q='+keywords+'&format=5&max-results=15&v=2';
+      var yt_url='https://gdata.youtube.com/feeds/api/videos?q='+keywords+'&format=5&max-results=15&v=2';
       var httpRequest;
 
       if (window.XMLHttpRequest) {
@@ -227,17 +227,38 @@
 
   var showResults = function(response) {
     if (response.getElementsByTagName) {
+      // Firefox needs the colon syntax, but everyone else
+      // seems to be able to live without it.
       var resultSets = response.getElementsByTagName('group');
-      var durations = response.getElementsByTagName('duration');
+      var name = null;
+      if (resultSets.length > 0) {
+        names = {
+          title: 'title',
+          thumbnail: 'thumbnail',
+          videoId: 'videoid',
+          duration: 'duration'
+        };
+      } else {
+        resultSets = response.getElementsByTagName('media:group');
+        if (resultSets.length > 0) {
+          names = {
+            title: 'media:title',
+            thumbnail: 'media:thumbnail',
+            videoId: 'yt:videoid',
+            duration: 'yt:duration'
+          };
+        }
+      }
+            
       if (resultSets.length >= 4) {
         adjustPlaylistSize(0);
       }
       for(var i = 0; i < resultSets.length; i++) {
         createResult ({ 
-          title : resultSets[i].getElementsByTagName('title')[0].childNodes[0].nodeValue,
-          thumbnail : resultSets[i].getElementsByTagName('thumbnail')[0].attributes['url'].value,
-          videoId : resultSets[i].getElementsByTagName('videoid')[0].childNodes[0].nodeValue,
-          duration : convertSecondsToTime(resultSets[i].getElementsByTagName('duration')[0].attributes.getNamedItem('seconds').value)
+          title : resultSets[i].getElementsByTagName(names.title)[0].childNodes[0].nodeValue,
+          thumbnail : resultSets[i].getElementsByTagName(names.thumbnail)[0].attributes['url'].value,
+          videoId : resultSets[i].getElementsByTagName(names.videoId)[0].childNodes[0].nodeValue,
+          duration : convertSecondsToTime(resultSets[i].getElementsByTagName(names.duration)[0].attributes.getNamedItem('seconds').value)
         });
       }
     } else {
@@ -476,7 +497,8 @@
   }
 
   var refreshWidthTo = function(seekTime, totalTime) {    
-    progressSoFar.style.width = ((seekTime / totalTime)*progressBar.offsetWidth)+'px';
+    var le_width = ((seekTime / totalTime)*progressBar.offsetWidth) || 0;
+    progressSoFar.style.width = le_width+'px';
     timePassed.innerHTML = convertSecondsToTime(seekTime);
   }
 
