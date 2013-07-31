@@ -58,7 +58,7 @@
     continuousPlayback = true;
   }
 
-  seek = function() {
+  seek = function(event) {
     var seekTime = ((getMousePositionX(event) - progressBar.offsetLeft) / progressBar.offsetWidth) * video.getDuration();
     seekToSeconds(seekTime);
   }
