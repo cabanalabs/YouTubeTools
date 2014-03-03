@@ -4,7 +4,7 @@
   <meta charset=utf-8 />
   <title>Playr.me</title>
   <link href="css/main.css" rel="stylesheet" type="text/css">
-  <?php include_once("track.php") ?>
+  <?php if (@file_exists('./track.php')) { include_once("track.php"); } ?>
 </head>
 <body>
   <div id="player">
@@ -36,9 +36,7 @@
   </div>
 
   <!-- load all the libraries first -->
-  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="js/swfobject.js"></script>
-  <script type="text/javascript" src="js/player.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
   <script>
     var getElement = function(id) {
       return document.getElementById(id);

@@ -4,7 +4,6 @@
   var videoIndexes = [];
   var playlist = {};
   var defaultVideoId = 'QcvjoWOwnn4';
-  var currentVideoId = null;
   var playedSoFar = [];
   var lastKeywords = '';
 
@@ -40,7 +39,7 @@
   }
 
   playPreview = function(playButton, id) {
-    currentVideoId = id;
+    playr.videoId = id;
     playVideoId(id);
     scrollToTop();
   }
@@ -65,9 +64,9 @@
 
     
   removeFromPlaylist = function(videoId) {
-    if (currentVideoId == videoId) {
+    if (playr.videoId == videoId) {
       video.pauseVideo();
-      currentVideoId = null;
+      playr.videoId = null;
       resetScreen();
     }
 
@@ -429,7 +428,7 @@
   }
 
   var playOrResumeCurrentVideo = function() {
-    video.loadVideoById(currentVideoId);
+    video.loadVideoById(playr.videoId);
     highlightCurrentVideo();
     if (storedTime > 0.0) {
       seekToSeconds(storedTime);
@@ -437,23 +436,23 @@
   }
 
   var highlightCurrentVideo = function() {
-    if (currentVideoId != null) {
+    if (playr.videoId != null) {
       for (videoId in playlist) {
         playlist[videoId].element.className = 'ListElement';
       }
 
-      if (playlist[currentVideoId]) {
-        playlist[currentVideoId].element.className = 'ListElement Playing';
-        playlist[currentVideoId].element.scrollIntoView();
+      if (playlist[playr.videoId]) {
+        playlist[playr.videoId].element.className = 'ListElement Playing';
+        playlist[playr.videoId].element.scrollIntoView();
       } else {        
-        var titleElement = getElement('video_title_'+currentVideoId);
+        var titleElement = getElement('video_title_'+playr.videoId);
         titleElement.className = 'PreviewTitle Played';
       }
     }
   }  
 
   var playVideoId = function(id) {
-    currentVideoId = id;
+    playr.videoId = id;
     playOrResumeCurrentVideo();
   }
 
@@ -546,11 +545,11 @@
   };  
 
   var resetPlayOrder = function() {
-    playedSoFar = [currentVideoId];
+    playedSoFar = [vplayr.videoId];
   }
 
   var playNextContinuous = function() {
-    var currentVideoIndex = videoIndexes.indexOf(currentVideoId);
+    var currentVideoIndex = videoIndexes.indexOf(playr.videoId);
     if (currentVideoIndex < (videoIndexes.length - 1)) {
       playVideoId(videoIndexes[currentVideoIndex + 1]);
     }
@@ -661,7 +660,7 @@
     video = getElement(playerId);
     setButtons();
 
-    if (currentVideoId != null) {
+    if (playr.videoId != null) {
       playOrResumeCurrentVideo();
     } else if (addVideoIds(getVideoIdsFromAddressBar())) {
       defaultVideoId = null;
