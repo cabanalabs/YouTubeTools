@@ -13,6 +13,8 @@
       <a id="btnPlay" href="javascript:void(0);" title="Play"><img src="images/btnPlay.png" /></a>
       <a id="btnPause" href="javascript:void(0);" title="Pause"><img src="images/btnPause.png" /></a>
       <div id="volumeControl" title="Click to Set Volume"><div id="slider"></div><div id="volumeBack"></div></div>
+      <a href="javascript:void(0);" id="btnContinuous" title="Switch to Random Playback"><img src="images/btnContinuous.png" /></a>
+      <a href="javascript:void(0);" id="btnRandom" title="Switch to Continuous Playback"><img src="images/btnRandom.png" /></a>        
       <a id="btnFullScreen" href="javascript:void(0);" title="Make Fullscreen"><img src="images/btnFullScreen.png" /></a>
       <a id="btnEndFullScreen" href="javascript:void(0);" title="Exit Fullscreen"><img src="images/btnEndFullScreen.png" /></a>      
       <span id="timePassed">00:00:00</span>      
@@ -21,12 +23,6 @@
       <span id="progressBar"><span id="progressSoFar"></span></span>
     </div><br />
     <div id="playlist">
-      <div id="playlistControls">
-        <input id="txtVideoUrl" type="textbox" placeholder="Address of a YouTube video"/>
-        <a href="javascript:void(0);" id="btnAddVideo" title="Add youtube link to playlist"><img src="images/btnAddToPlaylist.png" /></a>
-        <a href="javascript:void(0);" id="btnContinuous" title="Switch to Random Playback"><img src="images/btnContinuous.png" /></a>
-        <a href="javascript:void(0);" id="btnRandom" title="Switch to Continuous Playback"><img src="images/btnRandom.png" /></a>        
-      </div>
       <div id="list"></div>
     </div>
   </div>

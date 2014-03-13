@@ -1,15 +1,31 @@
 (function() {
+  var includes = [
+    'http://www.google.com/jsapi',
+    'js/swfobject.js',
+    'js/common.js',
+    'js/playlist.js',
+    'js/playback_controls.js',
+    'js/search.js',
+    'js/playr.js'
+  ];
+  var included = [];
+  var checkLoadedScripts = function(path) {
+    included.push(path);
+    if (included.length === includes.length) {
+      playr.start();
+    }
+  }
   var include = function(path, async) {
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.src = path;
-    script.async = false;
+    script.async = typeof async !== 'undefined' ? async : false;
+    script.onload = checkLoadedScripts;
     head.appendChild(script);
-  }
+  };
 
-  include('http://www.google.com/jsapi');
-  include('js/swfobject.js');
-  include('js/playr.js');
-  include('js/player.js');
+  for (idx = 0; idx < includes.length; idx++) {
+    include(includes[idx]);
+  }
 })();

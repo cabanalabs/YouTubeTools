@@ -274,10 +274,6 @@
     video.seekTo(seekTime, true);
   }
 
-  var getElement = function(id) {
-    return document.getElementById(id);
-  }
-  
   var getVideoIdsFromAddress = function(address) {
     var match = address.match(/([?\&]v\=)([\w-,]+)/gi);
     var videoIds = [];
@@ -657,6 +653,10 @@
   }
 
   onYouTubePlayerReady = function(playerId) {
+    // Maybe this should trigger an event
+    // that all objects in the system can respond
+    // to.
+    playr.start(playerId);
     video = getElement(playerId);
     setButtons();
 

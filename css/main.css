@@ -153,7 +153,7 @@ input:-moz-placeholder { color:#CC9933; }
   color: gray;
 }
 
-.ListElement.over {
+.ListElement.over span {
   border-top: 2px solid gray;
 }
 
