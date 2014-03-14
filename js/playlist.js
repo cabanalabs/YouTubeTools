@@ -3,6 +3,7 @@ var playlist = {
   list: {},
   videoIndexes: [],
   playedSoFar: [],
+  continuousPlayback: true,
   playOrResumeCurrentVideo: function() {
     playr.player.loadVideoById(playr.videoId);
     playlist.highlightCurrentVideo();
@@ -38,6 +39,43 @@ var playlist = {
       var videoId = pls.videoIndexes[i];
       pls.list[videoId].index = i+1;
       pls.setTitleForPlaylistItem(videoId);
+    }
+  },
+  arrayGetRandom: function(a) {
+    return a[Math.floor(Math.random() * a.length)];
+  },
+  arrayDiff: function(outside, inside) {
+    return outside.filter(function(i) {return !(inside.indexOf(i) > -1);});
+  }, 
+  setPlayToRandom: function () {    
+    playlist.continuousPlayback = false;
+    playlist.resetPlayOrder();
+  },
+  setPlayToContinuous: function() {
+    playlist.continuousPlayback = true;
+  },
+  playNextContinuous: function() {
+    var pls = playlist;
+    var currentVideoIndex = pls.videoIndexes.indexOf(playr.videoId);
+    if (currentVideoIndex < (pls.videoIndexes.length - 1)) {
+      pls.playVideoId(pls.videoIndexes[currentVideoIndex + 1]);
+    }
+  },
+  playNextRandom: function() {
+    var pls = playlist;
+    if (pls.playedSoFar.length == pls.videoIndexes.length) {
+      pls.resetPlayOrder();
+    }
+    var randomId = pls.arrayGetRandom(pls.arrayDiff(pls.videoIndexes, pls.playedSoFar));
+    pls.playedSoFar.push(randomId);
+    pls.playVideoId(randomId);
+  },
+  playNext: function() {
+    pls = playlist;
+    if (pls.continuousPlayback) {
+      pls.playNextContinuous();
+    } else {
+      pls.playNextRandom();
     }
   },
   removeFromPlaylist: function(videoId) {
@@ -94,8 +132,8 @@ var playlist = {
   },
   handleDoubleClick: function(e) {
     this.classList.remove('over');
-    var videoId = this.getElementsByClassName('VideoId')[0].value;
-    playlist.playVideoId(videoId);
+    var clickedVideoId = this.getElementsByClassName('VideoId')[0].value;
+    playlist.playVideoId(clickedVideoId);
     scrollToTop();
   },
   handleClick: function(e) {
@@ -213,6 +251,9 @@ var playlist = {
   getVideoIdsFromAddressBar: function() {
     return playlist.getVideoIdsFromAddress(window.location.toString());
   },
+  resetPlayOrder: function() {
+    playlist.playedSoFar = [playr.videoId];
+  },
   initialize: function() {
     // Add first item to playlist
     // and play it.
@@ -226,8 +267,20 @@ var playlist = {
     }
   },
   handleStatusChange: function(e) {
-    if (playr.status === 'YOUTUBE PLUGIN LOADED') {
-      playlist.initialize();
+    var pls = playlist;
+    switch (playr.status) {
+      case 'YOUTUBE PLUGIN LOADED':
+        pls.initialize();
+        break;
+      case 'VIDEO HAS ENDED':
+        pls.playNext();
+        break;
+      case 'PLAYBACK SET TO RANDOM':
+        pls.setPlayToRandom();
+        break;
+      case 'PLAYBACK SET TO CONTINUOUS':
+        pls.setPlayToContinuous();
+        break;
     }
   }
 };

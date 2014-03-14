@@ -541,7 +541,7 @@
   };  
 
   var resetPlayOrder = function() {
-    playedSoFar = [vplayr.videoId];
+    playedSoFar = [playr.videoId];
   }
 
   var playNextContinuous = function() {

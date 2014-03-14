@@ -5,11 +5,26 @@ var playbackControls = {
   progressSoFar: getElement('progressSoFar'),
   timePassed: getElement('timePassed'),
   volumeControl: getElement('volumeControl'),
+  btnRandom: getElement('btnRandom'),
+  btnContinuous: getElement('btnContinuous'),
   initialize: function() {
+    var pbc = playbackControls;
     btnPlay.onclick = function() { playr.play(); };
     btnPause.onclick = function() { playr.pause(); };
-    progressBar.onclick = playbackControls.seek;
-    volumeControl.onclick = playbackControls.setVolume;
+    progressBar.onclick = pbc.seek;
+    volumeControl.onclick = pbc.setVolume;
+    btnContinuous.onclick = pbc.setPlayToRandom;
+    btnRandom.onclick = pbc.setPlayToContinuous;
+  },
+  setPlayToRandom: function () {    
+    btnRandom.style.display = 'inline-block';
+    btnContinuous.style.display = 'none';
+    playr.updateStatus('PLAYBACK SET TO RANDOM');
+  },
+  setPlayToContinuous: function() {
+    btnRandom.style.display = 'none';
+    btnContinuous.style.display = 'inline-block';    
+    playr.updateStatus('PLAYBACK SET TO CONTINUOUS');
   },
   getMousePositionX: function(e) {
     // Mouse position
@@ -83,7 +98,7 @@ var playbackControls = {
         pbc.switchControlsToPaused();
         break;
       case 'VIDEO HAS ENDED':
-        alert('ended!');
+        pbc.switchControlsToPaused();
         break;
     };
   }
