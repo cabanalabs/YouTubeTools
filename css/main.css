@@ -4,6 +4,19 @@ html {
   font-family: helvetica;
 }
 
+div#about, div#about a, div#about a:visited {
+ color: #666;
+ font-size: 13px;
+ font-weight: bold;
+ text-align: left;
+ font-family: sans-serif;
+ position: absolute;
+ width: 70px;
+ top: 8px;
+ left: 7px;
+ text-decoration: none;
+}
+
 div#player {
   margin-top:50px;
   background-color:black;
