@@ -7,6 +7,8 @@ var playbackControls = {
   volumeControl: getElement('volumeControl'),
   btnRandom: getElement('btnRandom'),
   btnContinuous: getElement('btnContinuous'),
+  btnFullScreen: getElement('btnFullScreen'),
+  btnEndFullScreen: getElement('btnEndFullScreen'),
   initialize: function() {
     var pbc = playbackControls;
     btnPlay.onclick = function() { playr.play(); };
@@ -15,6 +17,65 @@ var playbackControls = {
     volumeControl.onclick = pbc.setVolume;
     btnContinuous.onclick = pbc.setPlayToRandom;
     btnRandom.onclick = pbc.setPlayToContinuous;
+    playbackControls.addFullScreenEvents();
+  },
+  setUIToFullScreen: function() {
+    playr.player.classList.add('FullScreen');
+    playbackControls.btnFullScreen.style.display = 'none';
+    playbackControls.btnEndFullScreen.style.display = 'inline';
+  },
+  setUIToNormalScreen: function() {
+    player.classList.remove('FullScreen');
+    playbackControls.btnFullScreen.style.display = 'inline';
+    playbackControls.btnEndFullScreen.style.display = 'none';    
+  },
+  addFullScreenEvents: function() {
+    if (playr.player.requestFullScreen) {
+      document.addEventListener("fullscreenchange", playbackControls.switchBetweenNormalAndFullScreen);
+    } else if (playr.player.mozRequestFullScreen) {
+      document.addEventListener("mozfullscreenchange", playbackControls.switchBetweenNormalAndFullScreen);
+    } else if (playr.player.webkitRequestFullScreen) {
+      document.addEventListener("webkitfullscreenchange", playbackControls.switchBetweenNormalAndFullScreen);
+    }
+    
+    playbackControls.btnFullScreen.onclick = playbackControls.fullscreen;
+    playbackControls.btnEndFullScreen.onclick = playbackControls.endFullScreen;
+  },
+  switchBetweenNormalAndFullScreen: function(e) {
+    //pause();
+    //storeCurrentTime();    
+    isFullScreen = false;
+
+    if (playr.player.requestFullScreen) {
+      isFullScreen = document.fullscreen;
+    } else if (playr.player.mozRequestFullScreen) {
+      isFullScreen = document.mozFullScreen;
+    } else if (playr.player.webkitRequestFullScreen) {
+      isFullScreen = document.webkitIsFullScreen;
+    }
+    if (isFullScreen) {
+      playbackControls.setUIToFullScreen();
+    } else {
+      playbackControls.setUIToNormalScreen();
+    }
+  },
+  endFullScreen: function() {
+    if (playr.player.requestFullScreen) {
+      document.canceltFullScreen();
+    } else if (playr.player.mozRequestFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (playr.player.webkitRequestFullScreen) {
+      document.webkitCancelFullScreen();
+    }
+  },
+  fullscreen: function() {
+    if (playr.player.requestFullScreen) {
+      playr.player.requestFullScreen();
+    } else if (playr.player.mozRequestFullScreen) {
+      playr.player.mozRequestFullScreen();
+    } else if (playr.player.webkitRequestFullScreen) {
+      playr.player.webkitRequestFullScreen();
+    }
   },
   setPlayToRandom: function () {    
     btnRandom.style.display = 'inline-block';
@@ -88,7 +149,7 @@ var playbackControls = {
   handleStatusChange: function(e) {
     var pbc = playbackControls;
     switch (playr.status) {
-      case 'PLAYR STARTED':
+      case 'YOUTUBE PLUGIN LOADED':
         pbc.initialize();;
         break;
       case 'VIDEO IS PLAYING':
