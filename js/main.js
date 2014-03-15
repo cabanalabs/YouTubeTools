@@ -6,6 +6,7 @@
     'js/playlist.js',
     'js/playback_controls.js',
     'js/search.js',
+    'js/keyboard_controls.js',
     'js/playr.js'
   ];
   var included = [];

@@ -1,4 +1,12 @@
 var playr = {
+  videoStates: {
+    UNSTARTED : -1,
+    ENDED : 0,
+    PLAYING : 1,
+    PAUSED : 2,
+    BUFFERING : 3,
+    QUEUED : 5
+  },
   status: 'off',
   defaultVideoId: 'QcvjoWOwnn4',
   videoId: null,
@@ -21,42 +29,87 @@ var playr = {
         break;
       case 'YOUTUBE PLUGIN LOADED':
         break;
+      case 'FULLSCREEN REQUESTED':
+        playr.makeFullScreen();
+        break;
+      case 'END FULLSCREEN REQUESTED':
+        playr.endFullScreen();
+        break;
+      case 'BROWSER NOW IN FULLSCREEN MODE':
+        playr.setUIToFullScreen();
+      case 'FULLSCREEN ENDED':
+        playr.setUIToNormalScreen();
     };
     return true;
+  },
+  setUIToFullScreen: function() {
+    playr.player.classList.add('FullScreen');
+  },
+  setUIToNormalScreen: function() {
+    playr.player.classList.remove('FullScreen');
+  },
+  switchBetweenNormalAndFullScreen: function(e) {
+    isFullScreen = false;
+
+    if (playr.player.requestFullScreen) {
+      isFullScreen = document.fullscreen;
+    } else if (playr.player.mozRequestFullScreen) {
+      isFullScreen = document.mozFullScreen;
+    } else if (playr.player.webkitRequestFullScreen) {
+      isFullScreen = document.webkitIsFullScreen;
+    }
+    if (isFullScreen) {
+      playr.updateStatus('BROWSER NOW IN FULLSCREEN MODE');
+    } else {
+      playr.updateStatus('FULSCREEN ENDED');
+    }
+  },
+  makeFullScreen: function() {
+    if (playr.player.requestFullScreen) {
+      document.addEventListener("fullscreenchange", playr.switchBetweenNormalAndFullScreen);
+      playr.player.requestFullScreen();
+    } else if (playr.player.mozRequestFullScreen) {
+      document.addEventListener("fullscreenchange", playr.switchBetweenNormalAndFullScreen);
+      playr.player.mozRequestFullScreen();
+    } else if (playr.player.webkitRequestFullScreen) {
+      document.addEventListener("webkitfullscreenchange", playr.switchBetweenNormalAndFullScreen);
+      playr.player.webkitRequestFullScreen();
+    }
+  },
+  endFullScreen: function() {
+    if (playr.player.requestFullScreen) {
+      document.canceltFullScreen();
+    } else if (playr.player.mozRequestFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (playr.player.webkitRequestFullScreen) {
+      document.webkitCancelFullScreen();
+    }
   },
   updateStatus: function(newStatus) {
     playr.status = newStatus;
     document.dispatchEvent(playr.stateChanged);
   },
   playerStateChanged: function(newState) {
-    var videoStates = {
-        UNSTARTED : -1,
-        ENDED : 0,
-        PLAYING : 1,
-        PAUSED : 2,
-        BUFFERING : 3,
-        QUEUED : 5
-    };
     switch (newState) {
-      case videoStates.PLAYING:
+      case playr.videoStates.PLAYING:
         playr.updateStatus('VIDEO IS PLAYING');
         break;
-      case videoStates.PAUSED:
+      case playr.videoStates.PAUSED:
         playr.updateStatus('VIDEO HAS PAUSED');
         break;
-      case videoStates.STOPPED:
+      case playr.videoStates.STOPPED:
         playr.updateStatus('VIDEO HAS PAUSED');
         break;
-      case videoStates.ENDED:
+      case playr.videoStates.ENDED:
         playr.updateStatus('VIDEO HAS ENDED');
         break;
-      case videoStates.UNSTARTED:
+      case playr.videoStates.UNSTARTED:
         setUIToPaused();
         break;
-      case videoStates.BUFFERING:
+      case playr.videoStates.BUFFERING:
         // Show busy signal
         break;
-      case videoStates.QUEUED:
+      case playr.videoStates.QUEUED:
         alert('queued');
         break;
     }
@@ -79,6 +132,13 @@ var playr = {
   start: function() {
     document.addEventListener("playrStatusChanged", playr.handleStatusChange);
     playr.updateStatus('PLAYR STARTED');
+  },
+  pauseOrPlay: function() {
+    if (playr.player.getPlayerState() == playr.videoStates.PLAYING) {
+      playr.pause();
+    } else {
+      playr.play();
+    }
   },
   play: function() {
     playr.player.playVideo();

@@ -1,4 +1,4 @@
-var playlist = {
+var playlist = pls = {
   DEFAULT_VIDEO_ID: 'QcvjoWOwnn4',
   list: {},
   videoIndexes: [],
@@ -12,7 +12,6 @@ var playlist = {
     //}
   },
   highlightCurrentVideo: function() {
-    var pls = playlist;
     if (playr.videoId != null) {
       for (videoId in pls.list) {
         pls.list[videoId].element.className = 'ListElement';
@@ -32,7 +31,6 @@ var playlist = {
     playlist.playOrResumeCurrentVideo();
   },
   updateVideoOrder: function(videoId) {
-    var pls = playlist;
     var startIndex = pls.videoIndexes.indexOf(videoId);
     startIndex = startIndex > 0 ? startIndex : 0;
     for (var i = startIndex; i < pls.videoIndexes.length; i++) {
@@ -55,14 +53,12 @@ var playlist = {
     playlist.continuousPlayback = true;
   },
   playNextContinuous: function() {
-    var pls = playlist;
     var currentVideoIndex = pls.videoIndexes.indexOf(playr.videoId);
     if (currentVideoIndex < (pls.videoIndexes.length - 1)) {
       pls.playVideoId(pls.videoIndexes[currentVideoIndex + 1]);
     }
   },
   playNextRandom: function() {
-    var pls = playlist;
     if (pls.playedSoFar.length == pls.videoIndexes.length) {
       pls.resetPlayOrder();
     }
@@ -79,7 +75,6 @@ var playlist = {
     }
   },
   removeFromPlaylist: function(videoId) {
-    var pls = playlist;
     pls.list[videoId].element.parentNode.removeChild(pls.list[videoId].element);
     delete(pls.list[videoId]);
     pls.videoIndexes.splice(pls.videoIndexes.indexOf(videoId), 1);
@@ -109,7 +104,6 @@ var playlist = {
     this.classList.remove('over');
   },
   handleDrop: function(e) {
-    var pls = playlist;
     if (e.stopPropagation) {
       e.stopPropagation(); // Stops some browsers from redirecting.
     }
@@ -257,7 +251,6 @@ var playlist = {
   initialize: function() {
     // Add first item to playlist
     // and play it.
-    var pls = playlist;
     var videoIds = pls.getVideoIdsFromAddressBar();
     if (videoIds) {
       pls.addVideoIds(videoIds);
@@ -267,7 +260,6 @@ var playlist = {
     }
   },
   handleStatusChange: function(e) {
-    var pls = playlist;
     switch (playr.status) {
       case 'YOUTUBE PLUGIN LOADED':
         pls.initialize();

@@ -7,7 +7,7 @@
   <?php if (@file_exists('./track.php')) { include_once("track.php"); } ?>
 </head>
 <body>
-  <div id="about"><a href="http://seevishal.com" target="new">My blog</a></div>
+  <div id="about"><a href="http://seevishal.com" target="new">MY BLOG</a></div>
   <div id="player">
     <div id="screenContainer"><div id="playerScreen"></div></div><br />
     <div id="controls">      

@@ -87,12 +87,19 @@ var search = {
       alert('no go');
     }
   },
-  restartPressTimer: function() {
+  restartPressTimer: function(event) {
     window.clearTimeout(window.keyDownTimer);
     window.keyDownTimer = window.setTimeout(search.searchYouTube, 350);
+    event.stopPropagation();
   },
   initialize: function() {
     txtVideoSearch.onkeyup = search.restartPressTimer;
+    txtVideoSearch.onfocus = function() {
+      playr.updateStatus('IN SEARCH BOX NOW');
+    };
+    txtVideoSearch.onblur = function() {
+      playr.updateStatus('NO LONGER IN SEARCH BOX');
+    };
   },
   handleStatusChange: function(e) {
     if (playr.status === 'YOUTUBE PLUGIN LOADED') {
